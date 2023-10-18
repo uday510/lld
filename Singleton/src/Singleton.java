@@ -9,17 +9,17 @@ TODO:  A singleton is a class that is supposed to have only one instance per JVM
  */
 public class Singleton {
     // Private static instance of the Singleton class
-    private static Singleton instance;
+    private static Singleton INSTANCE;
 
     // Private constructor to prevent instantiation from other classes
     private Singleton() {}
 
     // Public method to provide a single point of access to the instance
     public static Singleton getInstance() {
-        if (instance == null) {
-            instance = new Singleton();
+        if (INSTANCE == null) {
+            INSTANCE = new Singleton();
         }
-        return instance;
+        return INSTANCE;
     }
 
     // Other methods and data members of the Singleton class
