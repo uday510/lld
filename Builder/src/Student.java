@@ -1,22 +1,27 @@
 public class Student {
-
     int id;
     String name;
     double psp;
     int age;
     String univName;
     int gradYear;
+    public Student student;
 
     private Student(Builder builder) {
-
+        this.age = builder.getAge();
+        this.name = builder.getName();
+        this.gradYear = builder.getGradYear();
     }
 
     public static Builder getBuilder() {
         return new Builder();
     }
 
-    static class Builder {
-
+   static class Builder {
+        /*
+        TODO: Builder is a creational design pattern that lets you construct complex objects step by step.
+             The pattern allows you to produce different types and representations of an object using the same construction code.
+         */
         int id;
         String name;
         double psp;
@@ -24,16 +29,21 @@ public class Student {
         String univName;
         int gradYear;
 
-//    Student(int id, String name...) {}
+        public int getGradYear() {
+            return gradYear;
+        }
 
+        public Builder setGradYear(int gradYear) {
+            this.gradYear = gradYear;
+            return this;
+        }
 
         public int getId() {
             return id;
         }
 
-        public Builder setId(int id) {
+        public void setId(int id) {
             this.id = id;
-            return this;
         }
 
         public String getName() {
@@ -49,9 +59,8 @@ public class Student {
             return psp;
         }
 
-        public Builder setPsp(double psp) {
+        public void setPsp(double psp) {
             this.psp = psp;
-            return this;
         }
 
         public int getAge() {
@@ -67,28 +76,20 @@ public class Student {
             return univName;
         }
 
-        public Builder setUnivName(String univName) {
+        public Builder getBuilder() {
+            return this;
+        }
+
+        public void setUnivName(String univName) {
             this.univName = univName;
-            return this;
-        }
-
-        public int getGradYear() {
-            return gradYear;
-        }
-
-        public Builder setGradYear(int gradYear) {
-            this.gradYear = gradYear;
-            return this;
         }
 
         public Student build() {
-
-            if (this.getAge() > 25) {
+            // validations
+            if (age > 25) {
                 throw new IllegalArgumentException();
             }
-
             return new Student(this);
         }
     }
-
 }

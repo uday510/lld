@@ -1,7 +1,8 @@
-//import javax.xml.stream.events.DTD;
-//
 //public class Builder {
-//
+//    /*
+//    TODO: Builder is a creational design pattern that lets you construct complex objects step by step.
+//         The pattern allows you to produce different types and representations of an object using the same construction code.
+//     */
 //    int id;
 //    String name;
 //    double psp;
@@ -9,16 +10,21 @@
 //    String univName;
 //    int gradYear;
 //
-////    Student(int id, String name...) {}
+//    public int getGradYear() {
+//        return gradYear;
+//    }
 //
+//    public Builder setGradYear(int gradYear) {
+//        this.gradYear = gradYear;
+//        return this;
+//    }
 //
 //    public int getId() {
 //        return id;
 //    }
 //
-//    public Builder setId(int id) {
+//    public void setId(int id) {
 //        this.id = id;
-//        return this;
 //    }
 //
 //    public String getName() {
@@ -34,9 +40,8 @@
 //        return psp;
 //    }
 //
-//    public Builder setPsp(double psp) {
+//    public void setPsp(double psp) {
 //        this.psp = psp;
-//        return this;
 //    }
 //
 //    public int getAge() {
@@ -51,27 +56,19 @@
 //    public String getUnivName() {
 //        return univName;
 //    }
+//    public Builder getBuilder() {
+//        return this;
+//    }
 //
-//    public Builder setUnivName(String univName) {
+//    public void setUnivName(String univName) {
 //        this.univName = univName;
-//        return this;
-//    }
-//
-//    public int getGradYear() {
-//        return gradYear;
-//    }
-//
-//    public Builder setGradYear(int gradYear) {
-//        this.gradYear = gradYear;
-//        return this;
 //    }
 //
 //    public Student build() {
-//
-//        if (this.getAge() > 25) {
+//        // validations
+//        if (age > 25) {
 //            throw new IllegalArgumentException();
 //        }
-//
 //        return new Student(this);
 //    }
 //}
