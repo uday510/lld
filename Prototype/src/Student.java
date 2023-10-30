@@ -4,6 +4,7 @@ public class Student implements Prototype {
     String batch;
     double avgBatchPsp;
     double studentPsp;
+
     @Override
     public Student clone() {
         Student copy = new Student();
@@ -12,6 +13,7 @@ public class Student implements Prototype {
         copy.batch = this.batch;
         copy.avgBatchPsp = this.avgBatchPsp;
         copy.studentPsp = this.studentPsp;
+
         return copy;
     }
 

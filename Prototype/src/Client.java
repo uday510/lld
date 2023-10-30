@@ -1,18 +1,16 @@
 public class Client {
 
-    public static void fillRegistry(StudentRegistry studentRegistry) {
-        Student apr21BatchStudent = new Student();
-        apr21BatchStudent.setBatch("April 21");
-        apr21BatchStudent.setAvgBatchPsp(80.9);
+    public static void fillRegistry(StudentRegistry registry) {
+        Student student = new Student();
+        student.setBatch("April 21");
+        student.setAvgBatchPsp(80.9);
 
-        studentRegistry.register("apr21Batch", apr21BatchStudent);
+        registry.register("April 21", student);
     }
     public static void main(String[] args) {
-        StudentRegistry studentRegistry = new StudentRegistry();
-        fillRegistry(studentRegistry);
+        StudentRegistry registry = new StudentRegistry();
+        fillRegistry(registry);
 
-        Student s1 = studentRegistry.get("apr21Batch").clone();
-
-
+        Student student = registry.get("April 21").clone();
     }
 }

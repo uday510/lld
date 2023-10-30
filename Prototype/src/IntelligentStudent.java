@@ -1,7 +1,4 @@
-import java.util.Objects;
-
 public class IntelligentStudent extends Student {
-
     int iq;
 
     @Override
@@ -9,7 +6,6 @@ public class IntelligentStudent extends Student {
         IntelligentStudent intelligentStudent = new IntelligentStudent();
         intelligentStudent.iq = this.iq;
         intelligentStudent.setAge(this.getAge());
-
-        return intelligentStudent;
+        return this;
     }
 }
