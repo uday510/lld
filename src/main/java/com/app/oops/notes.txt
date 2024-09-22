@@ -1,0 +1,45 @@
+Encapsulation is a fundamental programming technique used to achieve data hiding in OOP. Encapsulation in OOP refers to binding data and the methods to manipulate that data together in a single unit—class.
+
+Encapsulation is usually done to hide the state and representation of an object from the outside. A class can be thought of as a capsule with methods and attributes inside it.
+
+When encapsulating classes, a good convention is to declare all variables of a class pr
+
+
+ Abstraction is a technique used in object-oriented programming that simplifies the program's structure.
+ It focuses only on revealing the necessary details of a system and hiding irrelevant information to minimize its complexity.
+ In simpler words, we can say that it means to show what an object does and hides how it does it.
+
+
+ Abstraction vs Encapsulation
+
+1.  It focuses on the design level of the system.
+
+    It focuses on the implementation level of the system.
+
+
+2.  It hides unnecessary data to simplify the structure.
+
+    It restricts access to data to prevent its misuse.
+
+
+3. It highlights the work that the object performs.
+
+   It deals with the internal working of the object.
+
+
+The word polymorphism is a combination of two Greek words, “poly” meaning many, and “morph” meaning forms.
+In programming, polymorphism is a phenomenon that allows an object to have several different forms and behaviors.
+
+Types of Polymorphism
+    1. Dynamic Polymorphism
+    2. Static Polymorphism | Compile Time Polymorphism
+
+
+   1. Dynamic Polymorphism
+    Method overriding is an example of dynamic polymorphism. It is a process in which a subclass can provide
+    a specific implementation of a method that is already provided by one of its parent classes.
+
+    2. Static Polymorphism | Compile Time Polymorphism
+    Method overloading is an example of static polymorphism. It is a process in which a class can have two or more
+    methods with the same name but different parameters.
+
