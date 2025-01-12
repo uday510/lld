@@ -9,14 +9,14 @@ public class Animal {
     }
 }
 
-class Lion extends Animal {
+static class Lion extends Animal {
     // method overriding
     public void printAnimal() {
         System.out.println("I am from the Lion class\n");
     }
 }
 
-class Tiger extends Animal {
+static class Tiger extends Animal {
     // method overriding
     public void printAnimal() {
         System.out.println("I am from the Tiger class\n");

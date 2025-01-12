@@ -1,4 +1,5 @@
-Encapsulation is a fundamental programming technique used to achieve data hiding in OOP. Encapsulation in OOP refers to binding data and the methods to manipulate that data together in a single unit—class.
+Encapsulation is a fundamental programming technique used to achieve data hiding in OOP.
+Encapsulation in OOP refers to binding data and the methods to manipulate that data together in a single unit—class.
 
 Encapsulation is usually done to hide the state and representation of an object from the outside. A class can be thought of as a capsule with methods and attributes inside it.
 
@@ -42,4 +43,7 @@ Types of Polymorphism
     2. Static Polymorphism | Compile Time Polymorphism
     Method overloading is an example of static polymorphism. It is a process in which a class can have two or more
     methods with the same name but different parameters.
+
+
+  Inheritance is a mechanism in which one class acquires the properties and behavior of another class.
 
