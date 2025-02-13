@@ -1,14 +1,14 @@
-package com.app.oops.abstraction;
+package com.app.oops.datahiding.abstraction;
 
 public class Circle {
-    // define data attributes
-    private final double radius;
-    private final double pi;
+    //define data attributes
+    private double radius;
+    private double pi;
 
-    // define constructors
+    //define constructors
     public Circle() {
-        this.radius = 0;
-        this.pi = 3.14;
+        radius = 0;
+        pi = 3.142;
     }
 
     public Circle(double r) {
@@ -16,13 +16,13 @@ public class Circle {
         pi = 3.142;
     }
 
-    // define methods
-   public double area() {
+    //define methods
+    public double area() {
         return pi * radius * radius;
-   }
+    }
 
     public double perimeter() {
-         return 2 * pi * radius;
+        return 2 * pi * radius;
     }
 
     public static void main(String[] args) {

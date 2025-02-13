@@ -32,7 +32,7 @@ The word polymorphism is a combination of two Greek words, “poly” meaning ma
 In programming, polymorphism is a phenomenon that allows an object to have several different forms and behaviors.
 
 Types of Polymorphism
-    1. Dynamic Polymorphism
+    1. Dynamic Polymorphism | Run Time Polymorphism
     2. Static Polymorphism | Compile Time Polymorphism
 
 

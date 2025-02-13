@@ -1,4 +1,4 @@
-package com.app.oops.encapsulation;
+package com.app.oops.datahiding.encapsulation;
 
 public class Movie {
     // Data members
@@ -8,9 +8,9 @@ public class Movie {
 
     // Default constructor
     public Movie() {
-        title = "Unknown";
+        title = "";
         year = -1;
-        genre = "Unknown";
+        genre = "";
     }
 
     // Parameterized constructor
@@ -22,27 +22,23 @@ public class Movie {
 
     // getters setters
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
-    public void setTitle(String t) {
-        title = t;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getYear() {
-        return year;
+        return this.year;
     }
 
-    public void setYear(int y) {
-        year = y;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String g) {
-        genre = g;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     void printDetails() {
@@ -52,12 +48,11 @@ public class Movie {
     }
 
     public static void main(String[] args) {
-        Movie movie = new Movie("The Dark Knight", 2008, "Action");
+        Movie movie = new Movie("The Lion King", 1994, "Adventure");
         movie.printDetails();
 
-        System.out.println("-----");
-        movie.setTitle("The Dark Knight Rises");
-        movie.setYear(2012);
+        System.out.println("---");
+        movie.setTitle("Forrest Gump");
+        System.out.println("New title: " + movie.getTitle());
     }
 }
-
