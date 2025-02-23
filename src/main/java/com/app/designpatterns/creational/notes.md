@@ -1,0 +1,2 @@
+These patterns are used to provide a mechanism for creating objects in a specific situation without revealing the creation method. 
+The normal approach for creating an object might lead to complexities in the design of a project. These patterns allow flexibility in deciding which objects need to be created for a specific use case by providing control over the creation process.
