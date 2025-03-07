@@ -1,4 +1,4 @@
-package com.app.designpatterns.creational.factory;
+package com.app.patterns.creational.factory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,7 +6,6 @@ import java.util.List;
 
 interface Payment {
     void processPayment(double amount);
-    String getPaymentType();
 }
 
 enum PaymentType {
@@ -18,20 +17,12 @@ class CreditCardPayment implements Payment {
     public void processPayment(double amount) {
         System.out.println("[CreditCard] Processing " + amount);
     }
-    @Override
-    public String getPaymentType() {
-        return "Credit Card";
-    }
 }
 
 class UPIPayment implements Payment {
     @Override
     public void processPayment(double amount) {
         System.out.println("[UPI] Processing " + amount);
-    }
-    @Override
-    public String getPaymentType() {
-        return "UPI";
     }
 }
 
@@ -40,20 +31,12 @@ class PayPalPayment implements Payment {
     public void processPayment(double amount) {
         System.out.println("[PayPal] Processing " + amount);
     }
-    @Override
-    public String getPaymentType() {
-        return "PayPal";
-    }
 }
 
 class NetBankingPayment implements Payment {
     @Override
     public void processPayment(double amount) {
         System.out.println("[NetBanking] Processing " + amount);
-    }
-    @Override
-    public String getPaymentType() {
-        return "Net Banking";
     }
 }
 
@@ -113,4 +96,5 @@ public class EcommerceApp {
 
         TransactionLogger.showTransactionHistory();
     }
+
 }
