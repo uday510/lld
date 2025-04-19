@@ -1,6 +1,5 @@
 package com.app.principles;
 
-
 class Employee {
     private String name;
     private String position;
