@@ -1,4 +1,4 @@
-package com.app.principles;
+package com.app.oops;
 
 class Movie {
 
