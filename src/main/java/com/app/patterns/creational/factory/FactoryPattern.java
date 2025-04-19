@@ -1,6 +1,6 @@
 package com.app.patterns.creational.factory;
 
-abstract class Pizza {
+abstract class Pizza1 {
     String name;
 
     void prepare() {
@@ -24,14 +24,14 @@ abstract class Pizza {
     }
 }
 
-class NYStyleCheesePizza extends Pizza {
-    public NYStyleCheesePizza() {
+class NYStyleCheesePizza1ForFactoryPattern extends Pizza1 {
+    public NYStyleCheesePizza1ForFactoryPattern() {
         name = "NY Style Sauce and Cheese Pizza";
     }
 }
 
-class ChicagoStyleCheesePizza extends Pizza {
-    public ChicagoStyleCheesePizza() {
+class ChicagoStyleCheesePizza1ForFactoryPattern extends Pizza1 {
+    public ChicagoStyleCheesePizza1ForFactoryPattern() {
         name = "Chicago Style Deep Dish Cheese Pizza";
     }
 
@@ -41,39 +41,39 @@ class ChicagoStyleCheesePizza extends Pizza {
     }
 }
 
-abstract class PizzaStore {
+abstract class PizzaStore1 {
 
     // Factory Method
-    abstract Pizza createPizza(String type);
+    abstract Pizza1 createPizza(String type);
 
     // Template Method
-    public Pizza orderPizza(String type) {
-        Pizza pizza = createPizza(type);
+    public Pizza1 orderPizza(String type) {
+        Pizza1 pizza1ForFactoryPattern = createPizza(type);
 
-        pizza.prepare();
-        pizza.bake();
-        pizza.cut();
-        pizza.box();
+        pizza1ForFactoryPattern.prepare();
+        pizza1ForFactoryPattern.bake();
+        pizza1ForFactoryPattern.cut();
+        pizza1ForFactoryPattern.box();
 
-        return pizza;
+        return pizza1ForFactoryPattern;
     }
 }
 
-class NYPizzaStore extends PizzaStore {
+class NYPizzaStore1 extends PizzaStore1 {
     @Override
-    Pizza createPizza(String type) {
+    Pizza1 createPizza(String type) {
         if (type.equals("cheese")) {
-            return new NYStyleCheesePizza();
+            return new NYStyleCheesePizza1ForFactoryPattern();
         } else {
             return null;
         }
     }
 }
 
-class ChicagoPizzaStore extends PizzaStore {
-    Pizza createPizza(String type) {
+class ChicagoPizzaStore1 extends PizzaStore1 {
+    Pizza1 createPizza(String type) {
         if (type.equals("cheese")) {
-            return new ChicagoStyleCheesePizza();
+            return new ChicagoStyleCheesePizza1ForFactoryPattern();
         }
         return null;
     }
@@ -82,13 +82,15 @@ class ChicagoPizzaStore extends PizzaStore {
 public class FactoryPattern {
 
     public static void main(String[] args) {
-        PizzaStore nyStore = new NYPizzaStore();
-        PizzaStore chicagoStore = new ChicagoPizzaStore();
+        PizzaStore1 nyStore = new NYPizzaStore1();
+        PizzaStore1 chicagoStore = new ChicagoPizzaStore1();
 
-        Pizza pizza1 = nyStore.orderPizza("cheese");
-        System.out.println("Alan Turing ordered a " + pizza1.getName() + "\n");
+        Pizza1 pizza1ForFactoryPattern1 = nyStore.orderPizza("cheese");
+        System.out.println("Alan Turing ordered a " + pizza1ForFactoryPattern1.getName() + "\n");
 
-        Pizza pizza2 = chicagoStore.orderPizza("cheese");
-        System.out.println("Ada Lovelace ordered a " + pizza2.getName() + "\n");
+        System.out.println("-----------------------------");
+
+        Pizza1 pizza1ForFactoryPattern2 = chicagoStore.orderPizza("cheese");
+        System.out.println("Ada Lovelace ordered a " + pizza1ForFactoryPattern2.getName() + "\n");
     }
 }
