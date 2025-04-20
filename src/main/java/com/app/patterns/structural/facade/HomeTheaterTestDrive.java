@@ -1,6 +1,5 @@
 package com.app.patterns.structural.facade;
 
-
 class Amplifier {
     public void on() {
         System.out.println("Amplifier on");
