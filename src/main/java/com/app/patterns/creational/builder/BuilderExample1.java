@@ -1,4 +1,4 @@
-package com.app.patterns.creational.prototype;
+package com.app.patterns.creational.builder;
 
 class Car {
     private String engine;
@@ -68,7 +68,7 @@ class HTMLBuilder {
     }
 }
 
-public class Example1 {
+public class BuilderExample1 {
 
     public static void main(String[] args) {
 
