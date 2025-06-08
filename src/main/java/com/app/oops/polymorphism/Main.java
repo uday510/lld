@@ -3,10 +3,7 @@ package com.app.oops.polymorphism;
 public class Main {
 
     public static void main(String[] args) {
-        Animal animal;
-        Lion lion = new Lion();
-        animal = lion;
-
+        Animal animal = new Lion();
         animal.printAnimal();;
         animal.printAnimalTwo();
 

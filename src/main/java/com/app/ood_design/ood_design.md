@@ -1,0 +1,1 @@
+ Discussion of system --> Requirements--> Use case diagram --> class diagram --> sequence diagram --> activity diagram --> code
