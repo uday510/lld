@@ -1,5 +1,11 @@
 package com.app.principles;
 
+import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+
 class Employee {
     private String name;
     private String position;
@@ -44,4 +50,5 @@ public class SingleResponsibility {
         EmployeeReport employeeReport = new EmployeeReport();
         employeeReport.printReport(employee);
     }
+
 }

@@ -1,81 +1,143 @@
-A parking lot is a designated area for parking vehicles and is a feature found in almost all popular venues such as
-shopping malls, sports stadiums, offices, etc. In a parking lot, there are a fixed number of parking spots available 
-for different types of vehicles. Each of these spots is charged according to the time the vehicle has been parked 
-in the parking lot. The parking time is tracked with a parking ticket issued to the vehicle at the entrance of
-the parking lot. Once the vehicle is ready to exit, it can either pay at the automated exit panel or to the
-parking agent at the exit using a card or cash payment method.
+# Parking Lot System Design
 
+## 1. System Overview
+A parking lot is a designated area for parking vehicles found in venues like:
+- Shopping malls
+- Sports stadiums
+- Office buildings
 
-Expectations from the interviewee
-In a typical parking lot system, there are several components each with specific constraints and requirements.
-The following section provides an overview of some major expectations the interviewer will want an interviewee
-to discuss in more detail during the interview.
+### Key Features:
+- Fixed number of parking spots for different vehicle types
+- Time-based charging system
+- Ticket-based parking duration tracking
+- Multiple payment options (automated/agent, card/cash)
 
-Payment flexibility
-One of the most significant attributes of the parking lot system is the payment structure that it provides to its
-customers. An interviewer would expect you to ask questions like these:
+## 2. Core Requirements
 
---> How are customers able to pay at different exit points (i.e., either at the automated exit panel or to the parking agent)
-and by different methods (cash, credit, coupon)?
+| ID | Requirement Description |
+|----|-------------------------|
+| R1 | 40,000 vehicle capacity |
+| R2 | 4 spot types: Handicapped, Compact, Large, Motorcycle |
+| R3 | Multiple entrance/exit points |
+| R4 | Vehicle types: Car, Truck, Van, Motorcycle |
+| R5 | Prevent overcapacity parking |
+| R7 | Display "FULL" messages when capacity reached |
+| R8 | Ticket at entrance, payment at exit |
+| R9 | Payment options: automated panel or agent |
+| R10 | Hourly rate calculation |
+| R11 | Payment methods: credit/debit card or cash |
 
---> If there are multiple floors in the parking lot, how will the system keep track of the customer having already paid on 
-a particular floor rather than at the exit?
+## 3. Design Expectations
 
-Parking spot type
-Another topic of discussion that an interviewer would expect you to be aware of is the different parking spot
-types—handicapped, compact, large, and motorcycle—regarding which you can ask the following questions:
+### Payment Flexibility
+- Multiple payment points (exit panels/agents)
+- Various payment methods (cash, credit, coupons)
+- Multi-floor payment tracking
 
---> How will the parking capacity of each lot be considered?
---> What happens when a lot becomes full?
---> How can one keep track of the free parking spots on each floor if there are multiple floors in the parking lot?
---> How will the division of the parking spots be carried out among the four different parking spot types in the lot?
+### Parking Spot Types
+- Handicapped
+- Compact
+- Large
+- Motorcycle
 
-Vehicle types
-Similar to the parking spot, an interviewer would also expect you to discuss the different vehicle types—car,
-truck, van, motorcycle—which can have the following set of questions:
+**Key Considerations:**
+- Capacity management per type
+- Full lot handling
+- Multi-floor spot tracking
+- Spot type distribution
 
---> How will capacity be allocated for different vehicle types
---> If the parking spot of any vehicle type is booked, can a vehicle of another type park in the designated parking spot?
+### Vehicle Types
+- Car
+- Truck
+- Van
+- Motorcycle
 
-Pricing
-We touched upon the payment structure offered by the parking lot system. Now, the pricing model needs to be clarified
-from the interviewer, and therefore you may ask questions like these:
+**Key Considerations:**
+- Capacity allocation
+- Cross-type parking rules
 
---> How will pricing be handled? Should we accommodate having different rates for each hour?
-For example, customers will have to pay
-customers will have to pay $4 for the first hour, $3.5 for the second hour, and $2.5 for all subsequent hours.
+### Pricing Model
+- Tiered hourly rates (e.g., $4 → $3.5 → $2.5)
+- Vehicle-type pricing differentiation
 
---> Will the pricing be the same for the different vehicle types ?
+## 4. Design Approach
+**Bottom-Up Methodology:**
+1. Design small components (vehicles, spots)
+2. Combine into larger systems (payment, allocation)
+3. Iterate to complete system
 
+**Recommended Design Patterns:**
+- Factory Pattern (object creation)
+- Observer Pattern (capacity monitoring)
+- Strategy Pattern (payment methods)
 
-Design approach
-We are going to design this parking lot system using the bottom-up design approach. 
-For this purpose, we will follow the steps below:
+## 5. Use Case Analysis
 
---> Identify and design the smallest components first, like, the vehicle and parking spot types.
---> Use these small components to design bigger components, for example, the payment system at the exit.
---> Repeat the steps above until we design the whole system like the parking lot.
+### Actors
+**Primary:**
+- Customer (parks/pays)
+- Parking Agent (assists customers)
 
+**Secondary:**
+- Admin (manages system)
+- System (automated processes)
 
+### Use Cases
 
-Design pattern
-During an interview, it is always a good practice to discuss the design patterns that a parking lot system falls under.
-Stating the design patterns gives the interviewer a positive impression and shows that the interviewee is well-versed 
-in the advanced concepts of object-oriented design.
+**Admin:**
+- Add/remove spots
+- Manage agents
+- Modify rates
+- Update panels
+- Account management
 
+**Customer:**
+- Take ticket
+- Scan ticket
+- Pay ticket (Cash/Card)
+- Park vehicle
 
-Requirements:
-R1: The parking lot should have the capacity to park 40,000 vehicles.
-R2: The four different types of parking spots are handicapped, compact, large, and motorcycle.
-R3: The parking lot should have multiple entrance and exit points.
-R4: Four types of vehicles should be allowed to park in the parking lot, which are as follows:
-        -> Car
-        -> Truck
-        -> Van
-        -> Motorcycle
-R5: The system should not allow more vehicles in the parking lot if the maximum capacity (40,000) is reached.
-R7: If the parking lot is completely occupied, the system should show a message on the entrance and on the parking lot display board.
-R8: Customers should be able to collect a parking ticket from the entrance and pay at the exit.
-R9: The customer can pay for the ticket either with an automated exit panel or pay the parking agent at the exit.
-R10: The payment should be calculated at an hourly rate.
-R11: Payment can be made using either a credit/debit card or cash.
+**Parking Agent:**
+- All customer use cases +
+- Account updates
+- Login/logout
+
+**System:**
+- Assign spots
+- Remove spots
+- Display status
+- Show availability
+
+### Relationships
+**Generalizations:**
+1. Parking Agent → Customer
+2. Pay Ticket → (Cash, Credit Card)
+
+## 6. Class Diagram Components
+```mermaid
+classDiagram
+    class Vehicle {
+        +String licensePlate
+        +VehicleType type
+    }
+    
+    class ParkingSpot {
+        +SpotType type
+        +Boolean isOccupied
+        +assignVehicle()
+        +removeVehicle()
+    }
+    
+    class Ticket {
+        +DateTime entryTime
+        +DateTime exitTime
+        +calculateFee()
+    }
+    
+    class Payment {
+        +processPayment()
+    }
+    
+    Vehicle "1" -- "1" Ticket
+    ParkingSpot "1" -- "1" Vehicle
+    Ticket "1" -- "1" Payment
