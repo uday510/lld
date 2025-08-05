@@ -1,4 +1,4 @@
-package com.app;
+package com.app.oops.paymentservice;
 
 public enum PaymentType {
 

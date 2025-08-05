@@ -1,7 +1,5 @@
 package com.app.oops.paymentservice;
 
-import com.app.PaymentType;
-
 import java.util.HashMap;
 import java.util.Map;
 

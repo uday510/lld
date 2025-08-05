@@ -1,7 +1,5 @@
 package com.app.oops.paymentservice;
 
-import com.app.PaymentType;
-
 public class Client {
 
     public static void main(String[] args) {
