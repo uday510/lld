@@ -1,6 +1,5 @@
 package com.app.principles;
 
-
 /**
  * Clients should not be forced to depend on interfaces they do not use.
  */
@@ -51,7 +50,6 @@ class MultiFunctionMachine implements PrinterInterface, Scanner, Fax {
         System.out.println("MultiFunctionMachine faxing...");
     }
 }
-
 
 public class InterfaceSegregationPrinciple {
 

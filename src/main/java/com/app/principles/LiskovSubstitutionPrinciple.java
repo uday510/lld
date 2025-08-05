@@ -1,7 +1,6 @@
 package com.app.principles;
 
-
-/*
+/**
 Objects of a superclass should be replaceable with objects
  of its subclasses without breaking the application.
  */
@@ -11,8 +10,8 @@ interface Shape {
 }
 
 class Rectangle implements Shape {
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     public Rectangle(int width, int height) {
         this.width = width;
@@ -25,7 +24,7 @@ class Rectangle implements Shape {
 }
 
 class Square implements Shape {
-    private int side;
+    private final int side;
 
     public Square(int side) {
         this.side = side;

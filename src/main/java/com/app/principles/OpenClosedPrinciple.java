@@ -16,8 +16,14 @@ class UpiPayment implements PaymentMethod {
     }
 }
 
+class DebitCardPayment implements PaymentMethod {
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " using Debit Card");
+    }
+}
+
 class PaymentProcessor {
-    private PaymentMethod paymentMethod;
+    private final PaymentMethod paymentMethod;
 
     public PaymentProcessor(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
@@ -27,13 +33,20 @@ class PaymentProcessor {
         paymentMethod.pay(amount);
     }
 }
+
 public class OpenClosedPrinciple {
 
     public static void main(String[] args) {
+
         PaymentProcessor creditCardPaymentProcessor = new PaymentProcessor(new CreditCardPayment());
         creditCardPaymentProcessor.processPayment(2500);
 
         PaymentProcessor upiPaymentProcessor = new PaymentProcessor(new UpiPayment());
         upiPaymentProcessor.processPayment(1100);
+
+        PaymentProcessor debitCardPaymentProcessor = new PaymentProcessor(new DebitCardPayment());
+        debitCardPaymentProcessor.processPayment(1000);
+
     }
+
 }

@@ -26,7 +26,7 @@ class SMSService implements MessageService {
 }
 
 class NotificationManager {
-    private MessageService messageService;
+    private final MessageService messageService;
 
     // Inject the abstraction (Dependency Injection)
     public NotificationManager(MessageService messageService) {
@@ -44,7 +44,7 @@ public class DependencyInversion {
         // High-level module depends on abstraction
         MessageService email = new EmailService();
         NotificationManager emailNotifier = new NotificationManager(email);
-        emailNotifier.send("Welcome to Head First Java!");
+        emailNotifier.send("Your OTP is 123456");
 
         // Low-level module can be swapped easily
         MessageService sms = new SMSService();

@@ -1,11 +1,5 @@
 package com.app.principles;
 
-import java.awt.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-
 class Employee {
     private String name;
     private String position;
