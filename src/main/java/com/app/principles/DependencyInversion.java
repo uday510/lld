@@ -51,4 +51,5 @@ public class DependencyInversion {
         NotificationManager smsNotifier = new NotificationManager(sms);
         smsNotifier.send("Your OTP is 123456.");
     }
+
 }

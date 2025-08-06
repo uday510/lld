@@ -5,7 +5,7 @@ Dependency Injection is a design pattern in which an object receives its depende
  */
 
 class NotificationService {
-    private MessageService messageService;
+    private final MessageService messageService;
 
     // Constructor injection
     public NotificationService(MessageService messageService) {
