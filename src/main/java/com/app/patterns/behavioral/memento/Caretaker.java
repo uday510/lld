@@ -8,15 +8,16 @@ public class Caretaker {
 
     private final Deque<Memento> history = new ArrayDeque<>();
 
-    public void save(Memento memento) {
-        history.push(memento);
+    public void save(Editor editor) {
+        history.push(editor.save());
     }
 
-    public Memento undo() {
+    public void undo(Editor editor) {
         if (!history.isEmpty()) {
-            return history.pop();
+            history.pop();
+            assert history.peek() != null;
+            editor.restore(history.peek());
         }
-        return null;
     }
 
 }

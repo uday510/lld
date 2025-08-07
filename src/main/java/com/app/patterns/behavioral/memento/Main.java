@@ -7,17 +7,13 @@ public class Main {
         Editor editor = new Editor();
         Caretaker caretaker = new Caretaker();
 
-        editor.write("Hello, ");
-        caretaker.save(editor.save());
+        editor.write("Hello, World! ");
+        caretaker.save(editor);
 
-        System.out.println(editor.getContent());
-        editor.write("World!");
-        caretaker.save(editor.save());
+        editor.write("Alan Turing");
+        caretaker.save(editor);
 
-        System.out.println(editor.getContent());
-
-        editor.restore(caretaker.undo());
-
+        caretaker.undo(editor);
         System.out.println(editor.getContent());
     }
 }
