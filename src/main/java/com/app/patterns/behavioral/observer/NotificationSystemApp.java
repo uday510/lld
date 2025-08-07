@@ -79,4 +79,5 @@ public class NotificationSystemApp {
         System.out.println("---------------------------------");
         notificationService.triggerEvent("New login from Chrome browser.");
     }
+
 }
