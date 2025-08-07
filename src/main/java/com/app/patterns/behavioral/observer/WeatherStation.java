@@ -69,5 +69,9 @@ public class WeatherStation implements Subject {
         weatherStation.attach(displayDevice);
 
         weatherStation.setTemperature(100);
+
+        weatherStation.detach(displayDevice);
+
+        weatherStation.setTemperature(10);
     }
 }
