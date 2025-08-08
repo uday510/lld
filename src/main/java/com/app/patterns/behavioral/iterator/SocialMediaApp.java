@@ -54,7 +54,7 @@ interface Feed {
 }
 
 class SocialMediaFeed implements Feed {
-    private List<Post> posts;
+    private final List<Post> posts;
 
     public SocialMediaFeed() {
         posts = new ArrayList<>();
