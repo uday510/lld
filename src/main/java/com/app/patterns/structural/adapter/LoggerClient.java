@@ -7,7 +7,7 @@ interface AppLogger {
 
 class LegacyLogger {
     public void writeToLog(String message, String severity) {
-        System.out.println("[ " + severity + " ]: " + message);
+        System.out.println("[" + severity + "]: " + message);
     }
 }
 
