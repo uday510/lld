@@ -1,33 +1,24 @@
 package com.app.oops.abstraction;
 
-public class Circle {
-    //define data attributes
+// Concrete class implementing shape and Drawable
+abstract class Circle extends Shape implements Drawable {
     private double radius;
-    private double pi;
 
-    //define constructors
-    public Circle() {
-        radius = 0;
-        pi = 3.142;
+    public Circle(String color, double radius) {
+        super(color);
+        this.radius = radius;
     }
 
-    public Circle(double r) {
-        radius = r;
-        pi = 3.142;
-    }
-
-    //define methods
+    // Implementing abstract method from shape
+    @Override
     public double area() {
-        return pi * radius * radius;
+        return Math.PI * radius * radius;
     }
 
-    public double perimeter() {
-        return 2 * pi * radius;
+    // Implementing method from Drawable interface
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle.");
     }
 
-    public static void main(String[] args) {
-        Circle circle = new Circle(5);
-        System.out.printf("Area: %.2f %n", circle.area());
-        System.out.printf("Perimeter: %.2f %n", circle.perimeter());
-    }
 }
