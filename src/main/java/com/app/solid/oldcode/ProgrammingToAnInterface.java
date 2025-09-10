@@ -8,12 +8,12 @@ interface Animal {
 class Dog implements Animal {
     @Override
     public void makeSound() {
-        System.out.println("Dog is barking...");
+        System.out.println("Single is barking...");
     }
 
     @Override
     public void eat() {
-        System.out.println("Dog is eating.");
+        System.out.println("Single is eating.");
     }
 }
 
