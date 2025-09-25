@@ -1,6 +1,6 @@
 package com.app.solid.shopping_app;
 
-public class RegularCustomer implements Customer {
+class RegularCustomer implements Customer {
 
     @Override
     public void placeOrder(Order order) {

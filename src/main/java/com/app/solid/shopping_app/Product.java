@@ -1,3 +1,5 @@
+package com.app.solid.shopping_app;
+
 // SRP
 class Product {
     private String name;
@@ -13,7 +15,7 @@ class Product {
     }
 
     public double getPrice() {
-        return prices;
+        return price;
     }
 
 }

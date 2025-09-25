@@ -1,10 +1,13 @@
+package com.app.solid.shopping_app;
+
+import com.app.solid.shopping_app.Product;
+
+import java.util.ArrayList;
 import java.util.List;
 
 // SRP
-public class ShoppingCart {
+class ShoppingCart {
     private List<Product> items = new ArrayList<>();
-
-    public ShoppingApp() { }
 
     public void addProduct(Product product) {
         items.add(product);
@@ -19,6 +22,7 @@ public class ShoppingCart {
     }
 
     public double calculateTotal() {
-        return items.stream().mapToDouble(product::getPrice).sum();
+//        return items.stream().mapToDouble(product:::items).
+        return 0;
     }
 }

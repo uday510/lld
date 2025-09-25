@@ -15,7 +15,7 @@ I → Customers don’t need inventory methods; Admin doesn’t need order metho
 D → OrderService depends on PaymentMethod interface, not concrete classes.
 
  */
-public class ShoppingApp {
+class ShoppingApp {
 
     public static void main(String[] args) {
 

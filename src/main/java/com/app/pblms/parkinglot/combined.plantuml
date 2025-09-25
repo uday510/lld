@@ -1,0 +1,119 @@
+@startuml
+skinparam monochrome true
+skinparam backgroundColor #FFFFFF
+skinparam classBackgroundColor #FFFFFF
+skinparam dpi 300
+
+scale 1
+
+enum VehicleSize {
+    SMALL
+    MEDIUM
+    LARGE
+}
+
+interface Vehicle {
+    -String licensePlate
+    -VehicleSize size
+}
+
+class Car {
+    - String licensePlate
+}
+
+class Motorcycle {
+    - String licensePlate
+}
+
+class Truck {
+    - String licensePlate
+
+}
+
+Vehicle <|-- Car
+Vehicle <|-- Motorcycle
+Vehicle <|-- Truck
+
+interface ParkingSpot {
++ boolean isAvailable();
++ void occupy(Vehicle vehicle);
++ void vacate();
++ int getSpotNumber();
++ VehicleSize getSize();
+
+}
+
+class RegularSpot {
+         - int spotNumber
+        - Vehicle vehicle
+
+}
+
+class CompactSpot {
+        - int spotNumber
+        - Vehicle vehicle
+}
+
+class OversizedSpot {
+        - int spotNumber
+        - Vehicle vehicle
+}
+
+class ParkingManager {
+    -Map<VehicleSize, List<ParkingSpot>> availableSpots
+    -Map<Vehicle, ParkingSpot> vehicleToSpotMap
+    +findSpotForVehicle(Vehicle)
+    +parkVehicle(Vehicle)
+    +unparkVehicle(Vehicle)
+}
+
+ParkingSpot <|-- RegularSpot
+ParkingSpot <|-- CompactSpot
+ParkingSpot <|-- OversizedSpot
+
+interface FareStrategy {
+    +calculateFare(Ticket)
+}
+
+class BaseFareStrategy {
+    +calculateFare(Ticket)
+}
+
+class PeakHoursFareStrategy {
+    +calculateFare(Ticket)
+}
+
+class FareCalculator {
+    -List<FareStrategy> strategies
+    +calculateFare(Ticket)
+}
+
+class Ticket {
+    -String ticketId
+    -Vehicle vehicle
+    -ParkingSpot parkingSpot
+    -LocalDateTime entryTime
+    -LocalDateTime exitTime
+    +calculateParkingDuration()
+}
+
+FareStrategy <|.. BaseFareStrategy
+FareStrategy <|.. PeakHoursFareStrategy
+
+class ParkingLot {
+    -ParkingManager parkingManager
+    -FareCalculator fareCalculator
+    +enterVehicle(Vehicle)
+    +leaveVehicle(Ticket)
+}
+
+ParkingLot --> ParkingManager
+ParkingLot --> FareCalculator
+ParkingManager --> ParkingSpot
+ParkingSpot --> Vehicle
+FareCalculator --> FareStrategy
+FareCalculator --> Ticket
+Ticket --> Vehicle
+Ticket --> ParkingSpot
+
+@enduml

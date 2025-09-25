@@ -1,6 +1,8 @@
 // High-level OrderService depends on Payment abstraction
 
-public class OrderService {
+import com.app.oops.paymentservice.PaymentMethod;
+
+class OrderService {
     private PaymentMethod payment;
 
     public OrderService(PaymentMethod payment) {

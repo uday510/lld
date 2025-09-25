@@ -1,6 +1,6 @@
 package com.app.solid.shopping_app;
 
 // ISP
-public interface Admin {
+interface Admin {
     void manageInventory();
 }
