@@ -3,18 +3,14 @@ package com.app.pblms.parkinglot.spot;
 import com.app.pblms.parkinglot.vehicle.Vehicle;
 import com.app.pblms.parkinglot.vehicle.VehicleSize;
 
-public class CompactSize implements ParkingSpot {
-    private int spotNumber;
+public class OversizeSpot implements ParkingSpot {
+
+    private final int spotNumber;
     private Vehicle vehicle;
 
-    public CompactSize(int spotNumber, Vehicle vehicle) {
+    public OversizeSpot(int spotNumber, Vehicle vehicle) {
         this.spotNumber = spotNumber;
         this.vehicle = vehicle;
-    }
-
-    @Override
-    public int getSpotNumber() {
-        return spotNumber;
     }
 
     @Override
@@ -24,7 +20,11 @@ public class CompactSize implements ParkingSpot {
 
     @Override
     public void occupy(Vehicle vehicle) {
-        if (isAvailable()) this.vehicle = vehicle;
+        if (isAvailable()) {
+            this.vehicle = vehicle;
+        } else {
+            System.out.println("spot occupied");
+        }
     }
 
     @Override
@@ -33,8 +33,12 @@ public class CompactSize implements ParkingSpot {
     }
 
     @Override
-    public VehicleSize getSize() {
-        return VehicleSize.SMALL;
+    public int getSpotNumber() {
+        return this.spotNumber;
     }
 
+    @Override
+    public VehicleSize getSize() {
+        return VehicleSize.LARGE;
+    }
 }

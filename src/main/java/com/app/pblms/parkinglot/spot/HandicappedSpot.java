@@ -4,17 +4,13 @@ import com.app.pblms.parkinglot.vehicle.Vehicle;
 import com.app.pblms.parkinglot.vehicle.VehicleSize;
 
 public class HandicappedSpot implements ParkingSpot {
-    private int spotNumber;
+
+    private final int spotNumber;
     private Vehicle vehicle;
 
     public HandicappedSpot(int spotNumber, Vehicle vehicle) {
         this.spotNumber = spotNumber;
         this.vehicle = vehicle;
-    }
-
-    @Override
-    public int getSpotNumber() {
-        return spotNumber;
     }
 
     @Override
@@ -24,7 +20,11 @@ public class HandicappedSpot implements ParkingSpot {
 
     @Override
     public void occupy(Vehicle vehicle) {
-        if (isAvailable()) this.vehicle = vehicle;
+        if (isAvailable()) {
+            this.vehicle = vehicle;
+        } else {
+            System.out.println("spot not empty");
+        }
     }
 
     @Override
@@ -33,8 +33,12 @@ public class HandicappedSpot implements ParkingSpot {
     }
 
     @Override
-    public VehicleSize getSize() {
-        return VehicleSize.MEDIUM;
+    public int getSpotNumber() {
+        return this.spotNumber;
     }
 
+    @Override
+    public VehicleSize getSize() {
+        return VehicleSize.SMALL;
+    }
 }

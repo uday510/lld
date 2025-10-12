@@ -1,21 +1,16 @@
-
 package com.app.pblms.parkinglot.spot;
 
 import com.app.pblms.parkinglot.vehicle.Vehicle;
 import com.app.pblms.parkinglot.vehicle.VehicleSize;
 
 public class RegularSpot implements ParkingSpot {
-    private int spotNumber;
+
+    private final int spotNumber;
     private Vehicle vehicle;
 
-    public RegularSpot(int spotNumber, Vehicle vehicle) {
+    public RegularSpot(int spotNumber) {
         this.spotNumber = spotNumber;
-        this.vehicle = vehicle;
-    }
-
-    @Override
-    public int getSpotNumber() {
-        return spotNumber;
+        this.vehicle = null;
     }
 
     @Override
@@ -25,7 +20,11 @@ public class RegularSpot implements ParkingSpot {
 
     @Override
     public void occupy(Vehicle vehicle) {
-        if (isAvailable()) this.vehicle = vehicle;
+        if (isAvailable()) {
+            this.vehicle = vehicle;
+        } else {
+            System.out.println("spot occupied");
+        }
     }
 
     @Override
@@ -34,8 +33,12 @@ public class RegularSpot implements ParkingSpot {
     }
 
     @Override
+    public int getSpotNumber() {
+        return this.spotNumber;
+    }
+
+    @Override
     public VehicleSize getSize() {
         return VehicleSize.MEDIUM;
     }
-
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Ticket {
+
     private final String ticketId;
     private final Vehicle vehicle;
     private final ParkingSpot parkingSpot;
@@ -48,8 +49,8 @@ public class Ticket {
     }
 
     public BigDecimal calculateParkingDuration() {
-        return new BigDecimal(
-                Duration.between(entryTime, Objects.requireNonNullElseGet(exitTime, LocalDateTime::now)).toMinutes()
-        );
+        Long aLong = Duration.between(entryTime, Objects.requireNonNullElse(exitTime, LocalDateTime.now())).toMinutes();
+
+        return new BigDecimal(aLong);
     }
 }

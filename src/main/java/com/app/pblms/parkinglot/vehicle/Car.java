@@ -1,6 +1,7 @@
 package com.app.pblms.parkinglot.vehicle;
 
 public class Car implements Vehicle {
+
     private String licensePlate;
 
     public Car(String licensePlate) {
