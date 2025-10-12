@@ -1,0 +1,111 @@
+@startuml
+title Parking Lot System UML Diagram
+
+enum VehicleSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+interface Vehicle {
+  +String getLicensePlate()
+  +VehicleSize getSize()
+}
+
+class Car {
+  -String licensePlate
+}
+
+class Motorcycle {
+  -String licensePlate
+}
+
+class Truck {
+  -String licensePlate
+}
+
+Vehicle <|-- Car
+Vehicle <|-- Motorcycle
+Vehicle <|-- Truck
+
+interface ParkingSpot {
+  +boolean isAvailable()
+  +void occupy(Vehicle)
+  +void vacate()
+  +int getSpotNumber()
+  +VehicleSize getSize()
+}
+
+class RegularSpot {
+  -int spotNumber
+  -Vehicle vehicle
+}
+
+class CompactSpot {
+  -int spotNumber
+  -Vehicle vehicle
+}
+
+class OversizedSpot {
+  -int spotNumber
+  -Vehicle vehicle
+}
+
+ParkingSpot <|-- RegularSpot
+ParkingSpot <|-- CompactSpot
+ParkingSpot <|-- OversizedSpot
+
+class Ticket {
+  -String ticketId
+  -Vehicle vehicle
+  -ParkingSpot parkingSpot
+  -LocalDateTime entryTime
+  -LocalDateTime exitTime
+  +BigDecimal calculateParkingDuration()
+}
+
+class ParkingManager {
+  -Map<VehicleSize, List<ParkingSpot>> availableSpots
+  -Map<Vehicle, ParkingSpot> vehicleSpotMap
+  +ParkingSpot findSpotForVehicle(Vehicle)
+  +ParkingSpot parkVehicle(Vehicle)
+  +void unparkVehicle(Vehicle)
+}
+
+class FareCalculator {
+  -List<FareStrategy> fareStrategies
+  +BigDecimal calculateFare(Ticket)
+}
+
+interface FareStrategy {
+  +BigDecimal calculateFare(Ticket, BigDecimal)
+}
+
+class BaseFareStrategy {
+  -Map<VehicleSize, BigDecimal> RATE_MAP
+}
+
+class PeakHoursFareStrategy {
+  -BigDecimal PEAK_HOURS_MULTIPLIER
+  -boolean isPeakHour(LocalDateTime)
+}
+
+FareStrategy <|.. BaseFareStrategy
+FareStrategy <|.. PeakHoursFareStrategy
+
+class ParkingLot {
+  -ParkingManager parkingManager
+  -FareCalculator fareCalculator
+  +Ticket enterVehicle(Vehicle)
+  +BigDecimal exitVehicle(Ticket)
+}
+
+ParkingManager --> ParkingSpot
+ParkingManager --> Ticket
+ParkingLot --> ParkingManager
+ParkingLot --> FareCalculator
+Ticket --> Vehicle
+Ticket --> ParkingSpot
+FareCalculator --> FareStrategy
+
+@enduml
