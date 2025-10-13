@@ -1,26 +1,30 @@
 package com.app.pblms.parkinglot.fare;
 
+import com.app.patterns.structural.proxy.ProxyImage;
+import com.app.pblms.parkinglot.ticket.Ticket;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Applies a multiplier during peak hours.
+ */
 public class PeakHoursFareStrategy implements FareStrategy {
 
-    private static final BigDecimal PEAK_HOURS_MULTIPLIER = new BigDecimal("1.5");
-
-    public PeakHoursFareStrategy() { }
+    private static final BigDecimal PEAK_MULTIPLIER = new BigDecimal("1.5");
 
     @Override
-    public BigDecimal calculateFare(Ticket ticket, BigDecimal baseFar) {
-        BigDecimal fare = baseFar;
-        if (isPeakHour(ticket.getEntryTime())) {
-            fare = fare.multiply(PEAK_HOURS_MULTIPLIER);
+    public BigDecimal calculateFare(Ticket ticket, BigDecimal currentFare) {
+        LocalDateTime entryTime = ticket.getEntryTime();
+
+        if (isPeakHour(entryTime)) {
+            return currentFare.multiply(PEAK_MULTIPLIER);
         }
-        return fare;
+        return currentFare;
     }
 
     private boolean isPeakHour(LocalDateTime time) {
-        int hr = time.getHour();
-
-        return (hr >= 7 && hr <= 10) || (hr >= 16 && hr <= 19);
+        int hour = time.getHour();
+        return (hour >= 7 && hour <= 10) || (hour >= 16 && hour <= 19);
     }
 }

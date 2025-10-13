@@ -1,8 +1,12 @@
 package com.app.pblms.parkinglot.vehicle;
 
+/**
+ * Represents a medium-sized car
+ * Implements the Vehicle interface
+ */
 public class Truck implements Vehicle {
 
-    private String licensePlate;
+    private final String licensePlate;
 
     public Truck(String licensePlate) {
         this.licensePlate = licensePlate;
@@ -17,4 +21,10 @@ public class Truck implements Vehicle {
     public VehicleSize getSize() {
         return VehicleSize.LARGE;
     }
+
+    @Override
+    public String toString() {
+        return getLicensePlate();
+    }
+
 }
