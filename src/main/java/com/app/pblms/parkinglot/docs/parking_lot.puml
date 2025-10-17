@@ -1,5 +1,19 @@
 @startuml
-title Parking Lot System UML Diagram
+' ===============================
+' PARKING LOT SYSTEM UML DIAGRAM
+' ===============================
+
+' === ENUMS ===
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+}
 
 enum VehicleSize {
   SMALL
@@ -7,105 +21,104 @@ enum VehicleSize {
   LARGE
 }
 
-interface Vehicle {
-  +String getLicensePlate()
-  +VehicleSize getSize()
-}
-
-class Car {
-  -String licensePlate
-}
-
-class Motorcycle {
-  -String licensePlate
-}
-
-class Truck {
-  -String licensePlate
-}
-
-Vehicle <|-- Car
-Vehicle <|-- Motorcycle
-Vehicle <|-- Truck
-
-interface ParkingSpot {
-  +boolean isAvailable()
-  +void occupy(Vehicle)
-  +void vacate()
-  +int getSpotNumber()
-  +VehicleSize getSize()
-}
-
-class RegularSpot {
-  -int spotNumber
-  -Vehicle vehicle
-}
-
-class CompactSpot {
-  -int spotNumber
-  -Vehicle vehicle
-}
-
-class OversizedSpot {
-  -int spotNumber
-  -Vehicle vehicle
-}
-
-ParkingSpot <|-- RegularSpot
-ParkingSpot <|-- CompactSpot
-ParkingSpot <|-- OversizedSpot
-
-class Ticket {
-  -String ticketId
-  -Vehicle vehicle
-  -ParkingSpot parkingSpot
-  -LocalDateTime entryTime
-  -LocalDateTime exitTime
-  +BigDecimal calculateParkingDuration()
+' === MAIN CLASSES ===
+class ParkingLot {
+  - parkingManager : ParkingManager
+  - fareCalculator : FareCalculator
+  - paymentProcessor : PaymentProcessor
+  + enterVehicle(vehicle : Vehicle) : Ticket
+  + exitVehicle(ticket : Ticket) : void
 }
 
 class ParkingManager {
-  -Map<VehicleSize, List<ParkingSpot>> availableSpots
-  -Map<Vehicle, ParkingSpot> vehicleSpotMap
-  +ParkingSpot findSpotForVehicle(Vehicle)
-  +ParkingSpot parkVehicle(Vehicle)
-  +void unparkVehicle(Vehicle)
+  - parkingFloors : List<ParkingFloor>
+  - vehicleSpotsMap : Map<Vehicle, ParkingSpot>
+  + findSpotForVehicle(vehicle : Vehicle) : ParkingSpot
+  + parkVehicle(vehicle : Vehicle) : Ticket
+  + unparkVehicle(vehicle : Vehicle, method : PaymentMethod) : Payment
 }
 
+class ParkingFloor {
+  - floorNumber : int
+  - availableSpots : Map<VehicleSize, List<ParkingSpot>>
+  + findSpotForVehicle(vehicle : Vehicle) : ParkingSpot
+  + addSpot(spot : ParkingSpot) : void
+}
+
+class ParkingSpot {
+  - spotNumber : int
+  - size : VehicleSize
+  - available : boolean
+  + isAvailable() : boolean
+  + occupy(vehicle : Vehicle) : void
+  + vacate() : void
+}
+
+class Vehicle {
+  + licensePlate : String
+  + size : VehicleSize
+}
+
+class Car
+class Motorcycle
+class Truck
+
+class Ticket {
+  - ticketId : String
+  - vehicle : Vehicle
+  - entryTime : LocalDateTime
+  - exitTime : LocalDateTime
+  + calculateParkingDuration() : BigDecimal
+}
+
+class Payment {
+  - amount : BigDecimal
+  - method : PaymentMethod
+  - timestamp : LocalDateTime
+  - status : PaymentStatus
+}
+
+interface PaymentProcessor {
+  + process(amount : BigDecimal) : Payment
+}
+class CashPaymentProcessor
+
 class FareCalculator {
-  -List<FareStrategy> fareStrategies
-  +BigDecimal calculateFare(Ticket)
+  - fareStrategies : List<FareStrategy>
+  + calculateFare(ticket : Ticket) : BigDecimal
 }
 
 interface FareStrategy {
-  +BigDecimal calculateFare(Ticket, BigDecimal)
+  + calculateFare(ticket : Ticket, baseFare : BigDecimal) : BigDecimal
 }
+class BaseFareStrategy
+class PeakHoursFareStrategy
 
-class BaseFareStrategy {
-  -Map<VehicleSize, BigDecimal> RATE_MAP
-}
 
-class PeakHoursFareStrategy {
-  -BigDecimal PEAK_HOURS_MULTIPLIER
-  -boolean isPeakHour(LocalDateTime)
-}
+' === RELATIONSHIPS (WITH MULTIPLICITIES) ===
+ParkingLot "1" -- "1" ParkingManager
+ParkingLot "1" -- "1" FareCalculator
+ParkingLot "1" -- "1" PaymentProcessor
+ParkingLot "1" -- "*" ParkingFloor
 
-FareStrategy <|.. BaseFareStrategy
-FareStrategy <|.. PeakHoursFareStrategy
+ParkingManager "1" -- "*" Ticket
+ParkingManager "1" -- "*" Vehicle
+ParkingManager "1" -- "*" ParkingFloor
 
-class ParkingLot {
-  -ParkingManager parkingManager
-  -FareCalculator fareCalculator
-  +Ticket enterVehicle(Vehicle)
-  +BigDecimal exitVehicle(Ticket)
-}
+ParkingFloor "1" -- "*" ParkingSpot
+ParkingSpot "1" -- "0..1" Vehicle
 
-ParkingManager --> ParkingSpot
-ParkingManager --> Ticket
-ParkingLot --> ParkingManager
-ParkingLot --> FareCalculator
-Ticket --> Vehicle
-Ticket --> ParkingSpot
-FareCalculator --> FareStrategy
+Ticket "1" -- "1" Vehicle
+Ticket "1" -- "0..1" Payment
+Payment "1" -- "1" PaymentProcessor
+
+FareCalculator "1" -- "*" FareStrategy
+
+PaymentProcessor <|-- CashPaymentProcessor
+FareStrategy <|-- BaseFareStrategy
+FareStrategy <|-- PeakHoursFareStrategy
+Vehicle <|-- Car
+Vehicle <|-- Motorcycle
+Vehicle <|-- Truck
 
 @enduml
