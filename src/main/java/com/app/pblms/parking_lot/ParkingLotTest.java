@@ -1,15 +1,15 @@
-package com.app.pblms.parkinglot;
+package com.app.pblms.parking_lot;
 
-import com.app.pblms.parkinglot.fare.BaseFareStrategy;
-import com.app.pblms.parkinglot.fare.FareCalculator;
-import com.app.pblms.parkinglot.fare.FareStrategy;
-import com.app.pblms.parkinglot.fare.PeakHourFareStrategy;
-import com.app.pblms.parkinglot.payment.*;
-import com.app.pblms.parkinglot.spot.*;
-import com.app.pblms.parkinglot.vehicle.Car;
-import com.app.pblms.parkinglot.vehicle.Motorcycle;
-import com.app.pblms.parkinglot.vehicle.Truck;
-import com.app.pblms.parkinglot.vehicle.Vehicle;
+import com.app.pblms.parking_lot.fare.BaseFareStrategy;
+import com.app.pblms.parking_lot.fare.FareCalculator;
+import com.app.pblms.parking_lot.fare.FareStrategy;
+import com.app.pblms.parking_lot.fare.PeakHourFareStrategy;
+import com.app.pblms.parking_lot.payment.*;
+import com.app.pblms.parking_lot.spot.*;
+import com.app.pblms.parking_lot.vehicle.Car;
+import com.app.pblms.parking_lot.vehicle.Motorcycle;
+import com.app.pblms.parking_lot.vehicle.Truck;
+import com.app.pblms.parking_lot.vehicle.Vehicle;
 
 import java.util.ArrayList;
 import java.util.HashMap;

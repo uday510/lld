@@ -1,11 +1,11 @@
-package com.app.pblms.parkinglot;
+package com.app.pblms.parking_lot;
 
-import com.app.pblms.parkinglot.fare.FareCalculator;
-import com.app.pblms.parkinglot.payment.Payment;
-import com.app.pblms.parkinglot.payment.PaymentMethod;
-import com.app.pblms.parkinglot.payment.PaymentProcessor;
-import com.app.pblms.parkinglot.spot.ParkingSpot;
-import com.app.pblms.parkinglot.vehicle.Vehicle;
+import com.app.pblms.parking_lot.fare.FareCalculator;
+import com.app.pblms.parking_lot.payment.Payment;
+import com.app.pblms.parking_lot.payment.PaymentMethod;
+import com.app.pblms.parking_lot.payment.PaymentProcessor;
+import com.app.pblms.parking_lot.spot.ParkingSpot;
+import com.app.pblms.parking_lot.vehicle.Vehicle;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

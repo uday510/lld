@@ -1,7 +1,7 @@
-package com.app.pblms.parkinglot.fare;
+package com.app.pblms.parking_lot.fare;
 
-import com.app.pblms.parkinglot.Ticket;
-import com.app.pblms.parkinglot.vehicle.VehicleSize;
+import com.app.pblms.parking_lot.Ticket;
+import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

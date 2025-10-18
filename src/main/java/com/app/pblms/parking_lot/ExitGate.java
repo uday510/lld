@@ -1,7 +1,7 @@
-package com.app.pblms.parkinglot;
+package com.app.pblms.parking_lot;
 
-import com.app.pblms.parkinglot.payment.Payment;
-import com.app.pblms.parkinglot.payment.PaymentMethod;
+import com.app.pblms.parking_lot.payment.Payment;
+import com.app.pblms.parking_lot.payment.PaymentMethod;
 
 public class ExitGate {
 

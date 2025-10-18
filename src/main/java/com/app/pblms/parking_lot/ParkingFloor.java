@@ -1,9 +1,9 @@
-package com.app.pblms.parkinglot;
+package com.app.pblms.parking_lot;
 
 
-import com.app.pblms.parkinglot.spot.ParkingSpot;
-import com.app.pblms.parkinglot.vehicle.Vehicle;
-import com.app.pblms.parkinglot.vehicle.VehicleSize;
+import com.app.pblms.parking_lot.spot.ParkingSpot;
+import com.app.pblms.parking_lot.vehicle.Vehicle;
+import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 import java.util.*;
 

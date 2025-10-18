@@ -1,18 +1,18 @@
-package com.app.pblms.parkinglot.vehicle;
+package com.app.pblms.parking_lot.vehicle;
 
 /**
  * Represents a small-sized motorcycle
  * Implements the Vehicle interface
  */
-public class Truck implements Vehicle {
+public class Car implements Vehicle {
     private final String licensePlate;
 
-    public Truck(String licensePlate) {
+    public Car(String licensePlate) {
         this.licensePlate = licensePlate;
     }
 
     public VehicleSize getSize() {
-        return VehicleSize.LARGE;
+        return VehicleSize.MEDIUM;
     }
 
     @Override

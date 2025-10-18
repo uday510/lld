@@ -1,6 +1,6 @@
-package com.app.pblms.parkinglot.fare;
+package com.app.pblms.parking_lot.fare;
 
-import com.app.pblms.parkinglot.Ticket;
+import com.app.pblms.parking_lot.Ticket;
 
 import java.math.BigDecimal;
 

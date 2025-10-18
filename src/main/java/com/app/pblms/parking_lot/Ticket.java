@@ -1,13 +1,12 @@
-package com.app.pblms.parkinglot;
+package com.app.pblms.parking_lot;
 
-import com.app.pblms.parkinglot.spot.ParkingSpot;
-import com.app.pblms.parkinglot.vehicle.Vehicle;
+import com.app.pblms.parking_lot.spot.ParkingSpot;
+import com.app.pblms.parking_lot.vehicle.Vehicle;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * Ticket represents a parking session for a specific vehicle.

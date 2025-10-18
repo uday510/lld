@@ -1,4 +1,4 @@
-package com.app.pblms.parkinglot.payment;
+package com.app.pblms.parking_lot.payment;
 
 import java.math.BigDecimal;
 

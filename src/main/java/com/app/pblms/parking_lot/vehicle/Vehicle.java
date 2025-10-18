@@ -1,4 +1,4 @@
-package com.app.pblms.parkinglot.vehicle;
+package com.app.pblms.parking_lot.vehicle;
 
 /**
  * Vehicle interface represents a generica vehicle that can enter the parking lot.

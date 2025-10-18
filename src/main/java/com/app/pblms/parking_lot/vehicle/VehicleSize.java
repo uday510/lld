@@ -1,4 +1,4 @@
-package com.app.pblms.parkinglot.vehicle;
+package com.app.pblms.parking_lot.vehicle;
 
 
 /**

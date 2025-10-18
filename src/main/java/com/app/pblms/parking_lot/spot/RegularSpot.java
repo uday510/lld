@@ -1,18 +1,17 @@
-package com.app.pblms.parkinglot.spot;
+package com.app.pblms.parking_lot.spot;
+import com.app.pblms.parking_lot.vehicle.Vehicle;
+import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
-import com.app.pblms.parkinglot.vehicle.Vehicle;
-import com.app.pblms.parkinglot.vehicle.VehicleSize;
-
-public class OversizedSpot implements ParkingSpot {
+public class RegularSpot implements ParkingSpot {
 
     private final int spotNumber;
     private Vehicle vehicle;
     private boolean available;
 
-    public OversizedSpot(int spotNumber) {
+    public RegularSpot (int spotNumber) {
         this.spotNumber = spotNumber;
-        this.vehicle = null;
         this.available = true;
+        this.vehicle = null;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class OversizedSpot implements ParkingSpot {
     }
 
     @Override
-    public void vacate() {
+    public synchronized void vacate() {
         this.vehicle = null;
         this.available = true;
     }
@@ -43,7 +42,7 @@ public class OversizedSpot implements ParkingSpot {
 
     @Override
     public VehicleSize getSize() {
-        return VehicleSize.LARGE;
+        return VehicleSize.MEDIUM;
     }
 
     @Override

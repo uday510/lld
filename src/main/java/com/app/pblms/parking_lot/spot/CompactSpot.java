@@ -1,7 +1,7 @@
-package com.app.pblms.parkinglot.spot;
+package com.app.pblms.parking_lot.spot;
 
-import com.app.pblms.parkinglot.vehicle.Vehicle;
-import com.app.pblms.parkinglot.vehicle.VehicleSize;
+import com.app.pblms.parking_lot.vehicle.Vehicle;
+import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 public class CompactSpot implements ParkingSpot {
 
