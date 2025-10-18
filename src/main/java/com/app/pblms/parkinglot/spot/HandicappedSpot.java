@@ -3,32 +3,27 @@ package com.app.pblms.parkinglot.spot;
 import com.app.pblms.parkinglot.vehicle.Vehicle;
 import com.app.pblms.parkinglot.vehicle.VehicleSize;
 
-/**
- * Default implementation of ParkingSpot.
- * Each spot can hold one vehicle at a time.
- */
-public class ParkingSpotImpl implements ParkingSpot {
+public class HandicappedSpot implements ParkingSpot {
 
     private final int spotNumber;
-    private final VehicleSize size;
     private Vehicle vehicle;
     private boolean available;
 
-    public ParkingSpotImpl(int spotNumber, VehicleSize size) {
+    public HandicappedSpot(int spotNumber) {
         this.spotNumber = spotNumber;
-        this.size = size;
+        this.vehicle = null;
         this.available = true;
     }
 
     @Override
     public boolean isAvailable() {
-         return this.available;
+        return this.available;
     }
 
     @Override
-    public void occupy(Vehicle vehicle) {
+    public synchronized void occupy(Vehicle vehicle) {
         if (!available) {
-            throw new IllegalStateException("Spot " + spotNumber + " is already occupied.");
+            throw new IllegalStateException("Spot " + this.spotNumber + " unavailable.");
         }
 
         this.vehicle = vehicle;
@@ -48,12 +43,11 @@ public class ParkingSpotImpl implements ParkingSpot {
 
     @Override
     public VehicleSize getSize() {
-         return this.size;
+        return VehicleSize.SMALL;
     }
 
     @Override
     public String toString() {
-        return STR."ParkingSpot{spotNumber=\{spotNumber}, size=\{size}, available=\{available}}";
+        return STR."ParkingSpot{spotNumber=\{spotNumber}, size=\{getSize()}, available=\{available}}";
     }
-
 }

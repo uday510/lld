@@ -1,4 +1,4 @@
-package com.app.pblms.parkinglot.ticket;
+package com.app.pblms.parkinglot;
 
 import com.app.pblms.parkinglot.spot.ParkingSpot;
 import com.app.pblms.parkinglot.vehicle.Vehicle;
@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Random;
 
 /**
  * Ticket represents a parking session for a specific vehicle.
@@ -29,7 +29,7 @@ public class Ticket {
     }
 
     private String generateTicket() {
-        return "TICKET-" + UUID.randomUUID();
+        return STR."TICKET-\{System.currentTimeMillis() + ((int) (Math.random() * 1000)) }";
     }
 
     public Vehicle getVehicle() {
@@ -37,7 +37,7 @@ public class Ticket {
     }
 
     public ParkingSpot getParkingSpot() {
-         return this.parkingSpot;
+        return this.parkingSpot;
     }
 
     public LocalDateTime getEntryTime() {
@@ -56,7 +56,6 @@ public class Ticket {
         long minutes = Duration.between(entryTime, Objects.requireNonNullElse(exitTime, LocalDateTime.now())).toMinutes();
         return BigDecimal.valueOf(minutes);
     }
-
 
     @Override
     public String toString() {

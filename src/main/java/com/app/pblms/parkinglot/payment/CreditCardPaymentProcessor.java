@@ -4,7 +4,7 @@ package com.app.pblms.parkinglot.payment;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class CashPaymentProcessor implements PaymentProcessor {
+public class CreditCardPaymentProcessor implements PaymentProcessor {
 
     @Override
     public Payment process(BigDecimal amount) {

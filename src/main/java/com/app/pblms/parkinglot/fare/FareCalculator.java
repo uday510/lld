@@ -1,9 +1,9 @@
 package com.app.pblms.parkinglot.fare;
 
-import com.app.pblms.parkinglot.ticket.Ticket;
+import com.app.pblms.parkinglot.Ticket;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -24,9 +24,16 @@ public class FareCalculator {
      */
     public BigDecimal calculateFare(Ticket ticket) {
         BigDecimal fare = BigDecimal.ZERO;
+
         for (FareStrategy strategy : fareStrategies) {
             fare = strategy.calculateFare(ticket, fare);
         }
-        return fare;
+
+        if (fare.compareTo(BigDecimal.ONE) < 0) {
+            fare = BigDecimal.ONE;
+        }
+
+        return fare.setScale(2, RoundingMode.HALF_UP);
     }
+
 }

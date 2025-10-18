@@ -9,17 +9,21 @@ import java.time.LocalDateTime;
 public class Payment {
 
     private final String paymentId;
+    private final PaymentMethod paymentMethod;
     private final BigDecimal amount;
-    private final PaymentMethod method;
     private final LocalDateTime timestamp;
     private final PaymentStatus status;
 
-    public Payment(BigDecimal amount, PaymentMethod method, LocalDateTime timestamp, PaymentStatus status) {
+    public Payment(BigDecimal amount, PaymentMethod paymentMethod, PaymentStatus status, LocalDateTime timestamp) {
         this.paymentId = generatePaymentId();
         this.amount = amount;
-        this.method = method;
-        this.timestamp = timestamp;
         this.status = status;
+        this.paymentMethod = paymentMethod;
+        this.timestamp = timestamp;
+    }
+
+    private String generatePaymentId() {
+        return STR."PAY-\{System.currentTimeMillis() + ((int) (Math.random() * 1000)) }";
     }
 
     public BigDecimal getAmount() {
@@ -32,10 +36,6 @@ public class Payment {
 
     @Override
     public String toString() {
-        return STR."Payment{paymentId='\{paymentId}', amount=\{amount}, method='\{method}', timestamp=\{timestamp}, status=\{status}}";
-    }
-
-    private String generatePaymentId() {
-        return STR."PAY-\{System.currentTimeMillis()}-\{(int) (Math.random() * 1000)}";
+        return STR."Payment{paymentId='\{paymentId}', amount=\{amount}, method='\{paymentMethod}', timestamp=\{timestamp}, status=\{status}}";
     }
 }

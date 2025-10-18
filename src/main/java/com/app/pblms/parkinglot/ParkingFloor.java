@@ -1,4 +1,5 @@
-package com.app.pblms.parkinglot.floor;
+package com.app.pblms.parkinglot;
+
 
 import com.app.pblms.parkinglot.spot.ParkingSpot;
 import com.app.pblms.parkinglot.vehicle.Vehicle;
@@ -18,9 +19,14 @@ public class ParkingFloor {
     public ParkingFloor(int floorNumber) {
         this.floorNumber = floorNumber;
         this.availableSpots = new EnumMap<>(VehicleSize.class);
+
         for (VehicleSize size : VehicleSize.values()) {
             availableSpots.put(size, new ArrayList<>());
         }
+    }
+
+    public int getFloorNumber() {
+        return floorNumber;
     }
 
     /**
@@ -45,6 +51,7 @@ public class ParkingFloor {
                 }
             }
         }
+
         return null;
     }
 
@@ -52,5 +59,4 @@ public class ParkingFloor {
     public String toString() {
         return STR."ParkingFloor{floorNumber=\{floorNumber}, availableSpots=\{availableSpots}}";
     }
-
 }
