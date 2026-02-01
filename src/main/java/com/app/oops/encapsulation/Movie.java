@@ -47,7 +47,7 @@ public class Movie {
         System.out.println("Genre: " + genre);
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         Movie movie = new Movie("The Lion King", 1994, "Adventure");
         movie.printDetails();
 

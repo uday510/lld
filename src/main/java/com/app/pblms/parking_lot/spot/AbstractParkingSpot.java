@@ -2,8 +2,6 @@ package com.app.pblms.parking_lot.spot;
 import com.app.pblms.parking_lot.vehicle.Vehicle;
 import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
-import com.app.oops.inheritance.Vehicle;
-
 public class AbstractParkingSpot implements ParkingSpot {
     
     private final int spotNumber;
@@ -13,9 +11,14 @@ public class AbstractParkingSpot implements ParkingSpot {
     public AbstractParkingSpot(int spotNumber) {
         this.spotNumber = spotNumber;
         this.vehicle = null;
-        this.available = null;
+        this.available = true;
     }
-    
+
+    @Override
+    public boolean isAvailable() {
+        return available;
+    }
+
     @Override
     public synchronized void occupy(Vehicle vehicle) {
         if (!available) {

@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ParkingLotTest {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
 
         System.out.println("\n=== Parking Lot System ===\n");
 

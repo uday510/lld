@@ -1,7 +1,7 @@
 package com.app.oops.abstraction;
 
 public class Circle extends Shape implements Drawable {
-    private double radius;
+    private final double radius;
 
     public Circle(String color, double radius) {
         super(color);
@@ -33,4 +33,4 @@ public class Circle extends Shape implements Drawable {
   The Circle class extends Shape and implements Drawable, providing specific implementations for
   area() (calculating the circle’s area) and draw() (describing the drawing action).
 
- */
+*/

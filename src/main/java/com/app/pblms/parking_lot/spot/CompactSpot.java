@@ -4,7 +4,7 @@ import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 public class CompactSpot extends AbstractParkingSpot {
     public CompactSpot(int spotNumber) {
-        super(spotNumber)
+        super(spotNumber);
     }
 
     @Override
