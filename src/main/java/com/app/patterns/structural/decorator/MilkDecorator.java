@@ -1,4 +1,4 @@
-package com.app.patterns.structural.facade;
+package com.app.patterns.structural.decorator;
 
 public class MilkDecorator extends CoffeeDecorator {
 
