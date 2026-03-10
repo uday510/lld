@@ -2,7 +2,7 @@ package com.app.patterns.creational.prototype;
 
 public class GameClientWithoutPrototype {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         GameBoard gameBoard = new GameBoard();
         gameBoard.addPiece(new GamePiece("Blue", 1));
         gameBoard.addPiece(new GamePiece("White", 2));

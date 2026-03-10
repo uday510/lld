@@ -3,39 +3,45 @@ package com.app.pblms.parking_lot.payment;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * Represents a payment transaction for a parking session.
- */
+
 public class Payment {
 
     private final String paymentId;
     private final PaymentMethod paymentMethod;
     private final BigDecimal amount;
-    private final LocalDateTime timestamp;
+    private final LocalDateTime createdAt;
     private final PaymentStatus status;
 
-    public Payment(BigDecimal amount, PaymentMethod paymentMethod, PaymentStatus status, LocalDateTime timestamp) {
-        this.paymentId = generatePaymentId();
+    public Payment(String paymentId,
+                   PaymentMethod paymentMethod,
+                   BigDecimal amount,
+                   PaymentStatus status) {
+
+        this.paymentId = paymentId;
+        this.paymentMethod = paymentMethod;
         this.amount = amount;
         this.status = status;
-        this.paymentMethod = paymentMethod;
-        this.timestamp = timestamp;
+        this.createdAt = LocalDateTime.now();
+
     }
 
-    private String generatePaymentId() {
-        return STR."PAY-\{System.currentTimeMillis() + ((int) (Math.random() * 1000)) }";
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
     }
 
     public BigDecimal getAmount() {
         return amount;
     }
 
-    public PaymentStatus getStatus() {
-        return status;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    @Override
-    public String toString() {
-        return STR."Payment{paymentId='\{paymentId}', amount=\{amount}, method='\{paymentMethod}', timestamp=\{timestamp}, status=\{status}}";
+    public PaymentStatus getStatus() {
+        return status;
     }
 }

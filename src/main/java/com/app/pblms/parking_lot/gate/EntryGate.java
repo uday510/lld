@@ -1,23 +1,20 @@
-package com.app.pblms.parking_lot;
-
+package com.app.pblms.parking_lot.gate;
+import com.app.pblms.parking_lot.lot.ParkingLot;
+import com.app.pblms.parking_lot.ticket.Ticket;
 import com.app.pblms.parking_lot.vehicle.Vehicle;
 
-public class EntranceGate {
+public class EntryGate {
 
     private final int gateId;
     private final ParkingLot parkingLot;
 
-    public EntranceGate(int gateId, ParkingLot parkingLot) {
+    public EntryGate(int gateId, ParkingLot parkingLot) {
         this.gateId = gateId;
         this.parkingLot = parkingLot;
     }
 
-    public int getGateId() {
-        return gateId;
-    }
-
     public Ticket enter(Vehicle vehicle) {
+
         return parkingLot.park(vehicle);
     }
-
 }

@@ -138,7 +138,7 @@ class NyPizzaStore extends PizzaStore {
 
 public class AbstractFactoryExample {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         PizzaStore nyStore = new NyPizzaStore();
         Pizza pizza = nyStore.orderPizza("cheese");
         System.out.println("Ethan ordered a " + pizza.getName() + "\n");

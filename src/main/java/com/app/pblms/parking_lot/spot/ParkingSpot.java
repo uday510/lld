@@ -3,37 +3,48 @@ package com.app.pblms.parking_lot.spot;
 import com.app.pblms.parking_lot.vehicle.Vehicle;
 import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
-/**
- * ParkingSpot interface represents a single parking space in the lot.
- * Different types of spots (regular, EV, VIP, etc.) can implement this interface
- */
-public interface ParkingSpot {
+public class ParkingSpot {
 
-    /**
-     * Checks whether the parking spot is available.
-     * @return true if the spot is free, false is occupied.
-     */
-    boolean isAvailable();
+    private final int spotNumber;
+    private final VehicleSize size;
 
-    /**
-     * Occupies this spot with a vehicle.
-     * @param vehicle the vehicle to park
-     */
-    void occupy(Vehicle vehicle);
+    private Vehicle vehicle;
 
-    /**
-     * vacates this parking spot, making it available again
-     */
-    void vacate();
+    public ParkingSpot(int spotNumber, VehicleSize size) {
+        this.spotNumber = spotNumber;
+        this.size = size;
+    }
 
-    /**
-     * @return the spot number
-     */
-    int getSpotNumber();
+    public int getSpotNumber() {
+        return spotNumber;
+    }
 
-    /**
-     * @return the size of the spot (SMALL, MEDIUM, LARGE)
-     */
-    VehicleSize getSize();
+    public VehicleSize getSize() {
+        return size;
+    }
 
+    public boolean isAvailable() {
+        return vehicle == null;
+    }
+
+    public boolean canFitVehicle(Vehicle vehicle) {
+        return vehicle.getSize().ordinal() <= size.ordinal();
+    }
+
+    public void occupy(Vehicle vehicle) {
+
+        if (!isAvailable()) {
+            throw new IllegalStateException("Spot already occupied");
+        }
+
+        this.vehicle = vehicle;
+    }
+
+    public void vacate() {
+        this.vehicle = null;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
 }

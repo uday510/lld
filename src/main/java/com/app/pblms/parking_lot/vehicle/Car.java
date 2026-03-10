@@ -1,22 +1,14 @@
 package com.app.pblms.parking_lot.vehicle;
 
-/**
- * Represents a small-sized motorcycle
- * Implements the Vehicle interface
- */
-public class Car implements Vehicle {
-    private final String licensePlate;
+public class Car extends AbstractVehicle {
 
     public Car(String licensePlate) {
-        this.licensePlate = licensePlate;
+        super(licensePlate);
     }
 
+    @Override
     public VehicleSize getSize() {
         return VehicleSize.MEDIUM;
     }
 
-    @Override
-    public String getLicensePlate() {
-        return licensePlate;
-    }
 }

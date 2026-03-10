@@ -2,7 +2,7 @@ package com.app.patterns.creational.prototype;
 
 public class PrototypeMain {
 
-    public static void main(String[] args) {
+    static void main() {
 
         GameBoard gameBoard = new GameBoard();
 
@@ -12,4 +12,5 @@ public class PrototypeMain {
         GameBoard clonedGameBoard = gameBoard.clone();
         clonedGameBoard.showBoardState();
     }
+
 }

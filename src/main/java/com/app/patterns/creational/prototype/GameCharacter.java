@@ -27,4 +27,5 @@ public class GameCharacter implements Prototype<GameCharacter> {
                 this.power
         );
     }
+
 }

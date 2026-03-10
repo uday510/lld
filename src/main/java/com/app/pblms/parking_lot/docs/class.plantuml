@@ -1,0 +1,147 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package vehicle {
+
+interface Vehicle {
+  +getSize(): VehicleSize
+  +getLicensePlate(): String
+}
+
+abstract class AbstractVehicle {
+  -licensePlate: String
+  +getLicensePlate(): String
+}
+
+class Car {
+  +getSize(): VehicleSize
+}
+
+class Motorcycle {
+  +getSize(): VehicleSize
+}
+
+class Truck {
+  +getSize(): VehicleSize
+}
+
+enum VehicleSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+Vehicle <|-- AbstractVehicle
+AbstractVehicle <|-- Car
+AbstractVehicle <|-- Motorcycle
+AbstractVehicle <|-- Truck
+}
+
+package spot {
+
+class ParkingSpot {
+  -spotNumber: int
+  -size: VehicleSize
+  -vehicle: Vehicle
+  +isAvailable(): boolean
+  +canFitVehicle(vehicle: Vehicle): boolean
+  +occupy(vehicle: Vehicle)
+  +vacate()
+}
+
+}
+
+package floor {
+
+class ParkingFloor {
+  -floorNumber: int
+  -parkingSpots: List<ParkingSpot>
+  +addSpot(spot: ParkingSpot)
+  +getParkingSpots(): List<ParkingSpot>
+}
+
+}
+
+package ticket {
+
+class Ticket {
+  -vehicle: Vehicle
+  -parkingSpot: ParkingSpot
+  -entryTime: LocalDateTime
+  -exitTime: LocalDateTime
+  +closeTicket()
+  +getParkingDurationMinutes(): long
+}
+
+}
+
+package pricing {
+
+interface FareStrategy {
+  +apply(ticket: Ticket, currentFare: BigDecimal): BigDecimal
+}
+
+class BaseFareStrategy
+class PeakHourFareStrategy
+
+class FareCalculator {
+  -strategies: List<FareStrategy>
+  +calculateFare(ticket: Ticket): BigDecimal
+}
+
+FareStrategy <|-- BaseFareStrategy
+FareStrategy <|-- PeakHourFareStrategy
+}
+
+package payment {
+
+interface PaymentProcessor {
+  +process(amount: BigDecimal)
+}
+
+class CashPaymentProcessor
+
+PaymentProcessor <|-- CashPaymentProcessor
+}
+
+package gate {
+
+class EntryGate {
+  -gateId: int
+  -parkingLot: ParkingLot
+  +enter(vehicle: Vehicle): Ticket
+}
+
+class ExitGate {
+  -gateId: int
+  -parkingLot: ParkingLot
+  -paymentProcessor: PaymentProcessor
+  +exit(ticket: Ticket)
+}
+
+}
+
+package lot {
+
+class ParkingLot {
+  -parkingFloors: List<ParkingFloor>
+  -freeSpots: Map<VehicleSize, Queue<ParkingSpot>>
+  -fareCalculator: FareCalculator
+  +park(vehicle: Vehicle): Ticket
+  +unpark(ticket: Ticket): BigDecimal
+  -allocateSpot(vehicle: Vehicle): ParkingSpot
+}
+
+}
+
+ParkingFloor "1" *-- "*" ParkingSpot
+ParkingLot "1" *-- "*" ParkingFloor
+ParkingLot --> FareCalculator
+ParkingLot --> ParkingSpot
+Ticket --> ParkingSpot
+Ticket --> Vehicle
+EntryGate --> ParkingLot
+ExitGate --> ParkingLot
+ExitGate --> PaymentProcessor
+
+@enduml

@@ -30,4 +30,5 @@ public class GameBoard implements Prototype<GameBoard> {
         }
         return cloneGameBoard;
     }
+
 }

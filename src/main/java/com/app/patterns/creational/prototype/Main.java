@@ -1,7 +1,5 @@
 package com.app.patterns.creational.prototype;
 
-import com.app.patterns.structural.flyweight.Game;
-
 public class Main {
 
     GameCharacter hero =
