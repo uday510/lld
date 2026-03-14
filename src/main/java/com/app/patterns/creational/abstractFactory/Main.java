@@ -4,20 +4,25 @@ public class Main {
 
     static void main() {
 
-        UIFactory factory;
+//        UIFactory factory;
+//
+//        String os = System.getProperty("os.name");
+//
+//        if (os.contains("Windows")) {
+//            factory = new WindowsFactory();
+//        } else {
+//            factory = new MacFactory();
+//        }
+//
+//        Button b = factory.createButton();
+//        Checkbox c = factory.createCheckbox();
+//
+//        b.paint();
+//        c.paint();
 
-        String os = System.getProperty("os.name");
 
-        if (os.contains("Windows")) {
-            factory = new WindowsFactory();
-        } else {
-            factory = new MacFactory();
-        }
+        CloudService service = new CloudService(new AWSFactory());
 
-        Button b = factory.createButton();
-        Checkbox c = factory.createCheckbox();
-
-        b.paint();
-        c.paint();
+        service.run();
     }
 }
