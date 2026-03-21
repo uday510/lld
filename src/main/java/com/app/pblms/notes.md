@@ -34,7 +34,6 @@ _E-commerce / Business:_
 5.	Inventory Management
 6.	Splitwise
 
-
 _Mobility / Logistics:_
 1.	Ride Sharing System
 2.	Food Delivery System
