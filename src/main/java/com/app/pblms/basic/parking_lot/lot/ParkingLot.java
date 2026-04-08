@@ -15,16 +15,17 @@ public class ParkingLot {
     private final List<ParkingFloor> parkingFloors;
     private final Map<VehicleSize, Queue<ParkingSpot>> freeSpots;
     private final FareCalculator fareCalculator;
+    private final SpotAllocationStrategy SpotAllocationStrategy;
 
     public ParkingLot(List<ParkingFloor> parkingFloors,
                       FareCalculator fareCalculator) {
 
         this.parkingFloors = parkingFloors;
         this.fareCalculator = fareCalculator;
-        this.freeSpots = new EnumMap<>(VehicleSize.class);
+        this.freeSpots = new ConcurrentHashMap<>();
 
         for (VehicleSize size : VehicleSize.values()) {
-            freeSpots.put(size, new ArrayDeque<>());
+            freeSpots.put(size, new ConcurrentLinkedQueue<>());
         }
 
         initializeFreeSpots();
@@ -44,7 +45,7 @@ public class ParkingLot {
 
     public Ticket park(Vehicle vehicle) {
 
-        ParkingSpot spot = allocateSpot(vehicle);
+        ParkingSpot spot = this.SpotAllocationStrategy.allocate(vehicle);
 
         if (spot == null) {
             throw new RuntimeException("Parking Full");
@@ -53,26 +54,6 @@ public class ParkingLot {
         spot.occupy(vehicle);
 
         return new Ticket(vehicle, spot);
-    }
-
-    private ParkingSpot allocateSpot(Vehicle vehicle) {
-
-        VehicleSize vehicleSize = vehicle.getSize();
-
-        for (VehicleSize size : VehicleSize.values()) {
-
-            if (size.compareTo(vehicleSize) < 0) continue;
-
-            Queue<ParkingSpot> queue = freeSpots.get(size);
-
-            ParkingSpot spot = queue.poll();
-
-            if (spot != null && spot.canFitVehicle(vehicle)) {
-                return spot;
-            }
-        }
-
-        return null;
     }
 
     public BigDecimal unpark(Ticket ticket) {
