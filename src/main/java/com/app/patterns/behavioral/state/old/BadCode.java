@@ -1,4 +1,4 @@
-package com.app.patterns.behavioral.state;
+package com.app.patterns.behavioral.state.old;
 
 enum Mode {
     WALKING, CYCLING, TRAIN
