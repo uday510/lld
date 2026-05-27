@@ -2,18 +2,22 @@ package com.app.patterns.behavioral.state;
 
 public class Main {
 
-    public static void main(String[] args) {
+    static void main() {
 
-        DirectionService directionService = new DirectionService(new Cycling());
+        Webhook hook = new Webhook();
+        System.out.println("Initial state: " + hook.getStateName());
 
-        System.out.println(directionService.getDirection());;
-        System.out.println(directionService.getETA());
+        hook.attempt();
+        hook.markDelivered();;
+        System.out.println("Final state: " + hook.getStateName());
 
-        System.out.println("------------");
 
-        directionService.setTransportationMode(new Train());
-        System.out.println(directionService.getDirection());;
-        System.out.println(directionService.getETA());
+        System.out.println("\n--- trying illegal transition");
+        try {
+            hook.attempt();
+        } catch (IllegalStateException e) {
+            System.out.println("Caught expected: " + e.getMessage());
+        }
 
     }
 }

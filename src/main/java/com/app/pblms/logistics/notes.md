@@ -1,5 +1,5 @@
-1.	Ride Sharing System
-2.	Food Delivery System
-3.	Shipping Locker System
-4.	Courier Tracking System
-5.	Airline Reservation System
+Ride Sharing System 
+Food Delivery System
+Shipping Locker System
+Courier Tracking System
+Airline Reservation System
