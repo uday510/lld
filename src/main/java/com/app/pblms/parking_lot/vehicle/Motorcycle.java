@@ -6,7 +6,7 @@ public class Motorcycle extends AbstractVehicle {
         super(licensePlate);
     }
 
-    public VehicleSize getSize() {
+    public VehicleSize getVehicleSize() {
         return VehicleSize.SMALL;
     }
 }

@@ -19,7 +19,7 @@ public class ParkingSpot {
         return spotNumber;
     }
 
-    public VehicleSize getSize() {
+    public VehicleSize getVehicleSize() {
         return size;
     }
 
@@ -28,7 +28,7 @@ public class ParkingSpot {
     }
 
     public boolean canFitVehicle(Vehicle vehicle) {
-        return vehicle.getSize().ordinal() <= size.ordinal();
+        return vehicle.getVehicleSize().ordinal() <= size.ordinal();
     }
 
     public void occupy(Vehicle vehicle) {

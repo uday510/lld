@@ -4,8 +4,9 @@ import com.app.pblms.parking_lot.spot.ParkingSpot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
- class ParkingFloor {
+public class ParkingFloor {
 
     private final int floorNumber;
     private final List<ParkingSpot> parkingSpots;

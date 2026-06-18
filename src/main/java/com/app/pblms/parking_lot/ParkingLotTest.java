@@ -15,6 +15,11 @@ import com.app.pblms.parking_lot.vehicle.Car;
 import com.app.pblms.parking_lot.vehicle.Vehicle;
 import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
+import com.app.pblms.parking_lot.payment.PaymentMethod;
+import com.app.pblms.parking_lot.payment.PaymentProcessorFactory;
+import com.app.pblms.parking_lot.vehicle.Motorcycle;
+import com.app.pblms.parking_lot.vehicle.Truck;
+
 import java.util.List;
 
 import java.math.BigDecimal;
@@ -43,8 +48,8 @@ public class ParkingLotTest {
 
         // 2. Setup Strategies and Calculator
         FareCalculator fareCalculator = new FareCalculator(
-                List.of(new BaseFareStrategy(), new PeakFareStrategy())
-        );
+                List.of(new BaseFareStrategy(), new PeakHourFareStrategy()
+        ));
 
         // 3. Initialize Parking Lot
         ParkingLot parkingLot = new ParkingLot(List.of(parkingFloor1, parkingFloor2), fareCalculator);
@@ -74,10 +79,10 @@ public class ParkingLotTest {
         System.out.println("--- TEST CASE 1: Standard Flow ---");
         try {
             Ticket t1 = entryGate1.enter(motorcycle1);
-            System.out.println("Parked Motorcycle in spot: " + t1.getParkingSpot().getParkingSpotNumber());
+            System.out.println("Parked Motorcycle in spot: " + t1.getParkingSpot().getSpotNumber());
 
             Ticket t2 = entryGate2.enter(car1);
-            System.out.println("Parked Car in spot: " + t2.getParkingSpot().getParkingSpotNumber());
+            System.out.println("Parked Car in spot: " + t2.getParkingSpot().getSpotNumber());
 
             // Unpark and pay
             Payment p1 = exitGate1.exit(t1, PaymentMethod.CASH);
@@ -97,7 +102,7 @@ public class ParkingLotTest {
         System.out.println("--- TEST CASE 2: Duplicate Vehicle ---");
         try {
             Ticket t3 = entryGate1.enter(truck1);
-            System.out.println("Parked Truck in spot: " + t3.getParkingSpot().getParkingSpotNumber());
+            System.out.println("Parked Truck in spot: " + t3.getParkingSpot().getSpotNumber());
             
             // Try to park the exact same truck again
             System.out.println("Attempting to park the same Truck again...");
@@ -120,7 +125,7 @@ public class ParkingLotTest {
             // Based on your logic: vehicleSize.ordinal() <= parkingSpotSize.ordinal()
             // It should grab a MEDIUM spot!
             Ticket overflowTicket = entryGate2.enter(motorcycle3);
-            System.out.println("3rd Motorcycle parked in spot: " + overflowTicket.getParkingSpot().getParkingSpotNumber() 
+            System.out.println("3rd Motorcycle parked in spot: " + overflowTicket.getParkingSpot().getSpotNumber() 
                     + " (Size: " + overflowTicket.getParkingSpot().getVehicleSize() + ")");
             System.out.println("Test Case 3 Passed.\n");
         } catch (Exception e) {

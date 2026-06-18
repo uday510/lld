@@ -7,7 +7,7 @@ public class Car extends AbstractVehicle {
     }
 
     @Override
-    public VehicleSize getSize() {
+    public VehicleSize getVehicleSize() {
         return VehicleSize.MEDIUM;
     }
 

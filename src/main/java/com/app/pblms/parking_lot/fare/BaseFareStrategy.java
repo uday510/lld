@@ -19,7 +19,7 @@ public class BaseFareStrategy implements FareStrategy {
 
         long minutes = ticket.getParkingDurationMinutes();
 
-        VehicleSize size = ticket.getVehicle().getSize();
+        VehicleSize size = ticket.getVehicle().getVehicleSize();
 
         BigDecimal rate = RATE_MAP.getOrDefault(size, BigDecimal.ONE);
 

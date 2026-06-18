@@ -6,7 +6,7 @@ public class Truck extends AbstractVehicle {
         super(licensePlate);
     }
 
-    public VehicleSize getSize() {
+    public VehicleSize getVehicleSize() {
         return VehicleSize.LARGE;
     }
 

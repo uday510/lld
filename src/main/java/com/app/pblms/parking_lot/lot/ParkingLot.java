@@ -46,7 +46,7 @@ public class ParkingLot {
         ParkingSpot parkingSpot = getParkingSpot(vehicle);
 
         if (parkingSpot == null) {
-            throw new IllegalStateException("Parking Spot Unavailable for size " + vehicle.getSize());
+            throw new IllegalStateException("Parking Spot Unavailable for size " + vehicle.getVehicleSize());
         }
 
         ParkingSpot existing = vehicleParkingSpotStore.putIfAbsent(plate, parkingSpot);
@@ -85,7 +85,7 @@ public class ParkingLot {
     }
 
     private ParkingSpot getParkingSpot (Vehicle vehicle) {
-        VehicleSize reqVehicleSize = vehicle.getSize();
+        VehicleSize reqVehicleSize = vehicle.getVehicleSize();
 
         for (VehicleSize curVehicleSize : vehicleSizes) {
 
@@ -108,14 +108,14 @@ public class ParkingLot {
     }
 
     private void releaseSpot(ParkingSpot parkingSpot) {
-        freeSpots.get(parkingSpot.getSize()).offer(parkingSpot);
+        freeSpots.get(parkingSpot.getVehicleSize()).offer(parkingSpot);
     }
 
     private void initializeFreeSpots() {
 
         for (ParkingFloor parkingFloor : parkingFloors) {
             for (ParkingSpot parkingSpot : parkingFloor.getParkingSpots()) {
-                freeSpots.get(parkingSpot.getSize()).offer(parkingSpot);
+                freeSpots.get(parkingSpot.getVehicleSize()).offer(parkingSpot);
             }
         }
 
