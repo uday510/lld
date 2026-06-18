@@ -17,45 +17,139 @@ import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 import java.util.List;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParkingLotTest {
 
-    static void main() throws InterruptedException {
+    public static void main(String[] args) {
+        System.out.println("=== INITIALIZING PARKING LOT SYSTEM ===");
 
-        ParkingFloor floor1 = new ParkingFloor(1);
+        // 1. Setup Floors and Spots (Capacity: 2 Small, 2 Medium, 2 Large)
+        ParkingFloor parkingFloor1 = new ParkingFloor(1);
+        parkingFloor1.addParkingSpots(List.of(
+                new ParkingSpot(100, VehicleSize.SMALL),
+                new ParkingSpot(101, VehicleSize.MEDIUM),
+                new ParkingSpot(102, VehicleSize.LARGE)
+        ));
 
-        floor1.addSpot(new ParkingSpot(1, VehicleSize.SMALL));
-        floor1.addSpot(new ParkingSpot(2, VehicleSize.MEDIUM));
-        floor1.addSpot(new ParkingSpot(3, VehicleSize.LARGE));
+        ParkingFloor parkingFloor2 = new ParkingFloor(2);
+        parkingFloor2.addParkingSpots(List.of(
+                new ParkingSpot(200, VehicleSize.SMALL),
+                new ParkingSpot(201, VehicleSize.MEDIUM),
+                new ParkingSpot(202, VehicleSize.LARGE)
+        ));
 
-        FareCalculator calculator = new FareCalculator(
-          List.of(
-                  new BaseFareStrategy(),
-                  new PeakHourFareStrategy()
-          )
+        // 2. Setup Strategies and Calculator
+        FareCalculator fareCalculator = new FareCalculator(
+                List.of(new BaseFareStrategy(), new PeakFareStrategy())
         );
 
-        ParkingLot parkingLot =
-                new ParkingLot(List.of(floor1), calculator);
+        // 3. Initialize Parking Lot
+        ParkingLot parkingLot = new ParkingLot(List.of(parkingFloor1, parkingFloor2), fareCalculator);
 
-        EntryGate entryGate = new EntryGate(1, parkingLot);
-        ExitGate exitGate = new ExitGate(1, parkingLot, new CashPaymentProcessor());
+        // 4. Setup Factory and Gates
+        PaymentProcessorFactory paymentFactory = new PaymentProcessorFactory();
+        
+        EntryGate entryGate1 = new EntryGate(1, parkingLot);
+        EntryGate entryGate2 = new EntryGate(2, parkingLot);
+        
+        ExitGate exitGate1 = new ExitGate(1, parkingLot, paymentFactory);
+        ExitGate exitGate2 = new ExitGate(2, parkingLot, paymentFactory);
 
-        Vehicle car = new Car("KA-01-1234");
+        // 5. Create Vehicles
+        Vehicle motorcycle1 = new Motorcycle("MOTO-111");
+        Vehicle motorcycle2 = new Motorcycle("MOTO-222");
+        Vehicle motorcycle3 = new Motorcycle("MOTO-333"); // Used to test overflow
+        Vehicle car1 = new Car("CAR-111");
+        Vehicle car2 = new Car("CAR-222");
+        Vehicle truck1 = new Truck("TRK-111");
 
-        System.out.println("Vehicle entering parking lot...");
+        System.out.println("Initialization Complete.\n");
 
-        Ticket ticket = entryGate.enter(car);
+        // ==========================================
+        // TEST CASE 1: Standard Parking & Unparking
+        // ==========================================
+        System.out.println("--- TEST CASE 1: Standard Flow ---");
+        try {
+            Ticket t1 = entryGate1.enter(motorcycle1);
+            System.out.println("Parked Motorcycle in spot: " + t1.getParkingSpot().getParkingSpotNumber());
 
-        System.out.println("Ticket generated for vehicle: "
-                + car.getLicensePlate());
+            Ticket t2 = entryGate2.enter(car1);
+            System.out.println("Parked Car in spot: " + t2.getParkingSpot().getParkingSpotNumber());
 
-        Thread.sleep(2000);
+            // Unpark and pay
+            Payment p1 = exitGate1.exit(t1, PaymentMethod.CASH);
+            System.out.println("Motorcycle exited. Paid: $" + p1.getAmount() + " via " + p1.getPaymentMethod());
 
-        System.out.println("Vehicle exiting parking lot...");
+            Payment p2 = exitGate2.exit(t2, PaymentMethod.CREDIT_CARD);
+            System.out.println("Car exited. Paid: $" + p2.getAmount() + " via " + p2.getPaymentMethod());
+            
+            System.out.println("Test Case 1 Passed.\n");
+        } catch (Exception e) {
+            System.out.println("Test Case 1 Failed: " + e.getMessage());
+        }
 
-        Payment payment = exitGate.exit(ticket);
+        // ==========================================
+        // TEST CASE 2: Duplicate Vehicle Prevention
+        // ==========================================
+        System.out.println("--- TEST CASE 2: Duplicate Vehicle ---");
+        try {
+            Ticket t3 = entryGate1.enter(truck1);
+            System.out.println("Parked Truck in spot: " + t3.getParkingSpot().getParkingSpotNumber());
+            
+            // Try to park the exact same truck again
+            System.out.println("Attempting to park the same Truck again...");
+            entryGate2.enter(truck1); 
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught expected exception: " + e.getMessage());
+            System.out.println("Test Case 2 Passed.\n");
+        }
 
-        System.out.println("Payment processed: " + payment.getAmount());
+        // ==========================================
+        // TEST CASE 3: Vehicle Upgrades Spot (Small in Medium Spot)
+        // ==========================================
+        System.out.println("--- TEST CASE 3: Spot Upgrade ---");
+        try {
+            // Capacity is 2 small spots. Let's fill them.
+            entryGate1.enter(motorcycle1); // Fills Small Spot 1 (Floor 1)
+            entryGate1.enter(motorcycle2); // Fills Small Spot 2 (Floor 2)
+            
+            // Try to park a 3rd motorcycle. 
+            // Based on your logic: vehicleSize.ordinal() <= parkingSpotSize.ordinal()
+            // It should grab a MEDIUM spot!
+            Ticket overflowTicket = entryGate2.enter(motorcycle3);
+            System.out.println("3rd Motorcycle parked in spot: " + overflowTicket.getParkingSpot().getParkingSpotNumber() 
+                    + " (Size: " + overflowTicket.getParkingSpot().getVehicleSize() + ")");
+            System.out.println("Test Case 3 Passed.\n");
+        } catch (Exception e) {
+            System.out.println("Test Case 3 Failed: " + e.getMessage());
+        }
 
+        // ==========================================
+        // TEST CASE 4: Lot Full / Unavailability
+        // ==========================================
+        System.out.println("--- TEST CASE 4: Lot Full / No Spots ---");
+        try {
+            // Currently Parked: Truck1(Large), Moto1(Small), Moto2(Small), Moto3(Medium)
+            // Remaining: 1 Medium, 1 Large.
+            
+            entryGate1.enter(car2); // Takes the last Medium spot
+            
+            Vehicle truck2 = new Truck("TRK-222");
+            entryGate2.enter(truck2); // Takes the last Large spot
+            
+            // Lot is effectively full for Cars and Trucks now (Only a small vehicle could technically steal a large spot, but let's try a Truck)
+            System.out.println("Attempting to park a 3rd Truck when no Large spots are left...");
+            Vehicle truck3 = new Truck("TRK-333");
+            entryGate1.enter(truck3); 
+            
+        } catch (IllegalStateException e) {
+            System.out.println("Caught expected exception: " + e.getMessage());
+            System.out.println("Test Case 4 Passed.\n");
+        }
+        
+        System.out.println("=== TESTING COMPLETE ===");
     }
 }

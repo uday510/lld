@@ -5,26 +5,32 @@ import com.app.pblms.parking_lot.spot.ParkingSpot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParkingFloor {
+ class ParkingFloor {
 
     private final int floorNumber;
     private final List<ParkingSpot> parkingSpots;
 
-    public ParkingFloor(int floorNumber) {
+    public ParkingFloor (int floorNumber) {
         this.floorNumber = floorNumber;
-        this.parkingSpots = new ArrayList<>();
-    }
-
-    public void addSpot(ParkingSpot parkingSpot) {
-        parkingSpots.add(parkingSpot);
+        this.parkingSpots = new CopyOnWriteArrayList<>();
     }
 
     public int getFloorNumber() {
-        return floorNumber;
+        return this.floorNumber;
     }
 
     public List<ParkingSpot> getParkingSpots() {
         return parkingSpots;
     }
 
-}
+    public void addParkingSpot(ParkingSpot parkingSpot) {
+        this.parkingSpots.add(parkingSpot);
+    }
+
+    public void addParkingSpots(List<ParkingSpot> parkingSpots) {
+        for (ParkingSpot parkingSpot : parkingSpots) {
+            this.addParkingSpot(parkingSpot);
+        }
+    }
+
+ }
