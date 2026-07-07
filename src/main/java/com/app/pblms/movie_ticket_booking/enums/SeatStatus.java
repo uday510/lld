@@ -1,0 +1,6 @@
+package com.app.pblms.movie_ticket_booking.enums;
+
+public enum SeatStatus {
+    AVAILABLE,
+    BOOKED
+}

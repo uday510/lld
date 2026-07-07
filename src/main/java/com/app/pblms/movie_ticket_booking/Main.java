@@ -1,146 +1,79 @@
 package com.app.pblms.movie_ticket_booking;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
-enum SeatCategory {
-    SILVER (new BigDecimal("150")),
-    GOLD (new BigDecimal("250")),
-    PREMIUM (new BigDecimal("400"));
+import com.app.patterns.creational.builder.User;
+import com.app.pblms.movie_ticket_booking.entities.Booking;
+import com.app.pblms.movie_ticket_booking.entities.Seat;
+import com.app.pblms.movie_ticket_booking.entities.Show;
+import com.app.pblms.movie_ticket_booking.enums.SeatCategory;
+import com.app.pblms.movie_ticket_booking.services.BookingService;
 
-    final BigDecimal basePrice;
-    SeatCategory (BigDecimal basePrice) {
-        this.basePrice = basePrice;
-    }
+public class Main {
+    public static void main(String[] args) {
+       
+        List<Seat> seats = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            seats.add(new Seat("A" + i, SeatCategory.GOLD));
+        }
 
-}
+        Show show = new Show("s1", Instant.now(), seats);
 
-enum SeatStatus { AVAILABLE, HELD, BOOKED }
+        BookingService bookingService = new BookingService();
+        User alice = new User("u1", "Alice");
 
-class User {
-    private final String id, name, email;
-    public User (String id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
+        // --- sanity 1: a normal booking works ---
+        System.out.println("=== Sanity: book A1, A2 ===");
+        Booking b = bookingService.bookWithLock(show, alice, List.of("A1", "A2"));
+        System.out.println("Booked " + b.getId() + " total=" + b.getTotalAmount()
+                + " status=" + b.getStatus());
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User u)) return false;
-        return id.equals(u.id);
-    }
+        // --- sanity 2: booking an already-booked seat fails ---
+        System.out.println("\n=== Sanity: book A1 again (taken) ===");
+        try {
+            bookingService.bookWithCas(show, new User("u2", "Bob"), List.of("A1"));
+            System.out.println("ERROR: should have failed");
+        } catch (Exception e) {
+            System.out.println("Expected failure: " + e.getMessage());
+        }
 
-    public int hashCode() {
-        return id.hashCode();
-    }
-}
+        // --- THE RACE TEST: 10 threads all book the SAME free seat A3 ---
+        AtomicInteger successes = new AtomicInteger();
+        AtomicInteger failures = new AtomicInteger();
 
-class Movie {
-    private final String id, title, language;
-    private final int durationMins;
+        Thread[] threads = new Thread[10];
+        for (int i = 0; i < 10; i++) {
+            final int idx = i;
+            threads[i] = new Thread(() -> {
+                user u = new User("race-" + idx, "Racer" + idx);
+                try {
+                    bookingService.bookWithCas(show, u, List.of("A3"));
+                    successes.incrementAndGet();
+                } catch (Exception e) {
+                    failures.incrementAndGet();
+                }
+            });
+        }
 
-    public Movie (String id, String title, String language, int durationMins) {
-        this.id = id;
-        this.title = title;
-        this.language = language;
-        this.durationMins = durationMins;
-    }
+        for (Thread t : threads) t.start();    // launch all
+        for (Thread t : threads) t.join();     // wait for all
 
-    public String getId() {
-        return id;
-    }
+        System.out.println("Successes: " + successes.get() + "  (must be 1)");
+        System.out.println("Failures:  " + failures.get() + "  (must be 9)");
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public int getDurationMins() {
-        return durationMins;
-    }
-}
-
-class City {
-    private final String id, name;
-    public City (String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-}
-
-class Seat {
-    private final String id;
-    private final int row, column;
-    private final SeatCategory category;
-    public Seat(String id, int row, int column, SeatCategory category) {
-        this.id = id;
-        this.row = row;
-        this.column = column;
-        this.category = category;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public SeatCategory getCategory() {
-        return category;
-    }
-}
-
-class Screen {
-    private final String id, name;
-    private final List<Seat> seats;
-
-    public Screen(String id, String name, List<Seat> seats) {
-        this.id = id;
-        this.name = name;
-        this.seats = seats;
-    }
-    public List<Seat> getSeats() {
-        return seats;
-    }
-}
-
-class Cinema {
-    private final String id, name;
-    private final City city;
-    private final List<Screen> screens = new ArrayList<>();
-    public Cinema (String id, String name, City city) {
-        this.id = id;
-        this.name = name;
-        this.city = city;
-    }
-    public void addScreen(Screen screen) {
-        screens.add(screen);
-    }
-
-}
-
-class ShowSeat {
-    private final String id;
-    private final String showId;
-    private final Seat seat;
-
-    private SeatStatus status = SeatStatus.AVAILABLE;
-    private User heldBy;
-    private Instant heldUntil;
-
-    public ShowSeat (String showId, Seat seat) {
-        this.showId = showId;
-        this.id = showId + ":" + seat.getId();
-        this.seat = seat;
-    }
-
-    public SeatStatus getStatus() {
-//        if (status == SeatStatus.HELD && he)
-        return null;
+        // --- all-or-nothing test: request [A4, A1] where A1 is taken -> book NONE ---
+        System.out.println("\n=== All-or-nothing: [A4, A1], A1 taken ===");
+        try {
+            bookingService.bookWithCas(show, alice, List.of("A4", "A1"));
+            System.out.println("ERROR: should have failed");
+        } catch (Exception e) {
+            System.out.println("Expected failure: " + e.getMessage());
+            // A4 must still be AVAILABLE — it was rolled back
+            System.out.println("A4 status: " + show.getShowSeat("A4").getStatus()
+                    + "  (must be AVAILABLE)");
+        }
     }
 }
