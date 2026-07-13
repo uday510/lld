@@ -2,11 +2,8 @@ package com.app.pblms.parking_lot.gate;
 
 import com.app.pblms.parking_lot.lot.ParkingLot;
 import com.app.pblms.parking_lot.payment.Payment;
-import com.app.pblms.parking_lot.payment.PaymentProcessor;
 import com.app.pblms.parking_lot.ticket.Ticket;
 import com.app.pblms.parking_lot.payment.PaymentMethod;
-
-import java.math.BigDecimal;
 
 public class ExitGate {
 

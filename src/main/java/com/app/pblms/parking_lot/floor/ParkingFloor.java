@@ -2,7 +2,6 @@ package com.app.pblms.parking_lot.floor;
 
 import com.app.pblms.parking_lot.spot.ParkingSpot;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

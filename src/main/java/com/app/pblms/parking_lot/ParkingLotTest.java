@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ParkingLotTest {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         System.out.println("=== INITIALIZING PARKING LOT SYSTEM ===");
 
         // 1. Setup Floors and Spots (Capacity: 2 Small, 2 Medium, 2 Large)
