@@ -62,15 +62,16 @@ public class LRUCache {
         node.next = tail;
     }
 
-}
+    private static class Node {
+        Node prev, next;
+        int k, v;
 
-class Node {
-    Node prev, next;
-    int k, v;
+        Node (int k, int v) {
+            this.k = k;
+            this.v = v;
+        }
 
-    Node (int k, int v) {
-        this.k = k;
-        this.v = v;
     }
 
 }
+

@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.app.pblms.movie_ticket_booking.entities.Booking;
 import com.app.pblms.movie_ticket_booking.entities.Show;
 import com.app.pblms.movie_ticket_booking.entities.ShowSeat;
+import com.app.pblms.movie_ticket_booking.entities.User;
 import com.app.pblms.movie_ticket_booking.enums.SeatStatus;
 
 public class BookingService {
@@ -61,7 +62,7 @@ public class BookingService {
     private List<ShowSeat> resolve(Show show, List<String> seatIds) {
         List<ShowSeat> seats = new ArrayList<>();
         for (String id : seatIds) {
-            seats.add(show.getSeat(id));        // throws IllegalArgumentException if seatId is missing
+            seats.add(show.getShowSeat(id));        // throws IllegalArgumentException if seatId is missing
         }
         return seats;
     }

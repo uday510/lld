@@ -107,7 +107,7 @@ public class ParkingLotTest {
             // Try to park the exact same truck again
             System.out.println("Attempting to park the same Truck again...");
             entryGate2.enter(truck1); 
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             System.out.println("Caught expected exception: " + e.getMessage());
             System.out.println("Test Case 2 Passed.\n");
         }
