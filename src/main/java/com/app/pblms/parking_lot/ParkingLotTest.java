@@ -7,7 +7,6 @@ import com.app.pblms.parking_lot.floor.ParkingFloor;
 import com.app.pblms.parking_lot.gate.EntryGate;
 import com.app.pblms.parking_lot.gate.ExitGate;
 import com.app.pblms.parking_lot.lot.ParkingLot;
-import com.app.pblms.parking_lot.payment.CashPaymentProcessor;
 import com.app.pblms.parking_lot.payment.Payment;
 import com.app.pblms.parking_lot.spot.ParkingSpot;
 import com.app.pblms.parking_lot.ticket.Ticket;
@@ -16,14 +15,9 @@ import com.app.pblms.parking_lot.vehicle.Vehicle;
 import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 import com.app.pblms.parking_lot.payment.PaymentMethod;
-import com.app.pblms.parking_lot.payment.PaymentProcessorFactory;
 import com.app.pblms.parking_lot.vehicle.Motorcycle;
 import com.app.pblms.parking_lot.vehicle.Truck;
 
-import java.util.List;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingLotTest {
@@ -54,14 +48,12 @@ public class ParkingLotTest {
         // 3. Initialize Parking Lot
         ParkingLot parkingLot = new ParkingLot(List.of(parkingFloor1, parkingFloor2), fareCalculator);
 
-        // 4. Setup Factory and Gates
-        PaymentProcessorFactory paymentFactory = new PaymentProcessorFactory();
-        
+        // 4. Setup Gates
         EntryGate entryGate1 = new EntryGate(1, parkingLot);
         EntryGate entryGate2 = new EntryGate(2, parkingLot);
         
-        ExitGate exitGate1 = new ExitGate(1, parkingLot, paymentFactory);
-        ExitGate exitGate2 = new ExitGate(2, parkingLot, paymentFactory);
+        ExitGate exitGate1 = new ExitGate(1, parkingLot);
+        ExitGate exitGate2 = new ExitGate(2, parkingLot);
 
         // 5. Create Vehicles
         Vehicle motorcycle1 = new Motorcycle("MOTO-111");
