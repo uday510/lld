@@ -5,9 +5,10 @@ import java.util.Map;
 
 public class LRUCache {
 
-    private Node head, tail;
-    private Map<Integer, Node> lru;
-    private int capacity;
+    private final Node head;
+    private final Node tail;
+    private final Map<Integer, Node> lru;
+    private final int capacity;
 
     public LRUCache(int capacity) {
         head = new Node(-1, -1);
