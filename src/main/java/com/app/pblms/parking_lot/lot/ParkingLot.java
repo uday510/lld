@@ -83,10 +83,19 @@ public class ParkingLot {
         ticket.closeTicket();
         BigDecimal fare = fareCalculator.calculateFare(ticket);
 
+        Payment payment = null;
+        try {
+            payment = paymentService.pay(fare, paymentMethod);
+        } catch (Exception e) {
+            vehicleParkingSpotStore.put(plate, parkingSpot);
+
+            throw new IllegalStateException("Payment failed. Vehicle cannot exit.");
+        }
+
         parkingSpot.vacate();
         releaseSpot(parkingSpot);
 
-        return paymentService.pay(fare, paymentMethod);
+        return payment;
     }
 
     private ParkingSpot getParkingSpot (Vehicle vehicle) {
@@ -98,15 +107,13 @@ public class ParkingLot {
 
             Queue<ParkingSpot> queue = freeSpots.get(curVehicleSize);
 
-           for (ParkingSpot parkingSpot : queue) {
-               if (parkingSpot.canFitVehicle(vehicle)) {
+           if (queue == null || queue.isEmpty()) continue;
 
-                   if (queue.remove(parkingSpot)) {
-                       return parkingSpot;
-                   }
+           ParkingSpot parkingSpot = queue.poll();
 
-               }
-           }
+            if (parkingSpot != null) {
+                return parkingSpot;
+            }
         }
 
         return null;

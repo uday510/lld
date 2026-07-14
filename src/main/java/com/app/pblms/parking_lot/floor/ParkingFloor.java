@@ -28,9 +28,7 @@ public class ParkingFloor {
     }
 
     public void addParkingSpots(List<ParkingSpot> parkingSpots) {
-        for (ParkingSpot parkingSpot : parkingSpots) {
-            this.addParkingSpot(parkingSpot);
-        }
+        this.parkingSpots.addAll(parkingSpots);
     }
 
  }
