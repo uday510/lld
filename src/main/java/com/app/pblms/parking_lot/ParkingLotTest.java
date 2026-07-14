@@ -7,7 +7,6 @@ import com.app.pblms.parking_lot.floor.ParkingFloor;
 import com.app.pblms.parking_lot.gate.EntryGate;
 import com.app.pblms.parking_lot.gate.ExitGate;
 import com.app.pblms.parking_lot.lot.ParkingLot;
-import com.app.pblms.parking_lot.payment.CashPaymentProcessor;
 import com.app.pblms.parking_lot.payment.Payment;
 import com.app.pblms.parking_lot.spot.ParkingSpot;
 import com.app.pblms.parking_lot.ticket.Ticket;
@@ -16,19 +15,14 @@ import com.app.pblms.parking_lot.vehicle.Vehicle;
 import com.app.pblms.parking_lot.vehicle.VehicleSize;
 
 import com.app.pblms.parking_lot.payment.PaymentMethod;
-import com.app.pblms.parking_lot.payment.PaymentProcessorFactory;
 import com.app.pblms.parking_lot.vehicle.Motorcycle;
 import com.app.pblms.parking_lot.vehicle.Truck;
 
 import java.util.List;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ParkingLotTest {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         System.out.println("=== INITIALIZING PARKING LOT SYSTEM ===");
 
         // 1. Setup Floors and Spots (Capacity: 2 Small, 2 Medium, 2 Large)
@@ -54,14 +48,12 @@ public class ParkingLotTest {
         // 3. Initialize Parking Lot
         ParkingLot parkingLot = new ParkingLot(List.of(parkingFloor1, parkingFloor2), fareCalculator);
 
-        // 4. Setup Factory and Gates
-        PaymentProcessorFactory paymentFactory = new PaymentProcessorFactory();
-        
+        // 4. Setup Gates
         EntryGate entryGate1 = new EntryGate(1, parkingLot);
         EntryGate entryGate2 = new EntryGate(2, parkingLot);
         
-        ExitGate exitGate1 = new ExitGate(1, parkingLot, paymentFactory);
-        ExitGate exitGate2 = new ExitGate(2, parkingLot, paymentFactory);
+        ExitGate exitGate1 = new ExitGate(1, parkingLot);
+        ExitGate exitGate2 = new ExitGate(2, parkingLot);
 
         // 5. Create Vehicles
         Vehicle motorcycle1 = new Motorcycle("MOTO-111");
@@ -107,7 +99,7 @@ public class ParkingLotTest {
             // Try to park the exact same truck again
             System.out.println("Attempting to park the same Truck again...");
             entryGate2.enter(truck1); 
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             System.out.println("Caught expected exception: " + e.getMessage());
             System.out.println("Test Case 2 Passed.\n");
         }

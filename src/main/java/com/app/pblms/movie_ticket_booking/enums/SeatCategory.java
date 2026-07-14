@@ -1,5 +1,7 @@
 package com.app.pblms.movie_ticket_booking.enums;
 
+import java.math.BigDecimal;
+
 public enum SeatCategory {
 
     SILVER(new BigDecimal("150")),

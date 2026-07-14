@@ -2,6 +2,9 @@ package com.app.pblms.parking_lot.lot;
 
 import com.app.pblms.parking_lot.fare.FareCalculator;
 import com.app.pblms.parking_lot.floor.ParkingFloor;
+import com.app.pblms.parking_lot.payment.Payment;
+import com.app.pblms.parking_lot.payment.PaymentMethod;
+import com.app.pblms.parking_lot.payment.PaymentService;
 import com.app.pblms.parking_lot.spot.ParkingSpot;
 import com.app.pblms.parking_lot.ticket.Ticket;
 import com.app.pblms.parking_lot.vehicle.Vehicle;
@@ -18,6 +21,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ParkingLot {
 
     private final List<ParkingFloor> parkingFloors;
+    private final PaymentService paymentService;
     private final FareCalculator fareCalculator;
     private final Map<VehicleSize, Queue<ParkingSpot>> freeSpots;
     private final Map<String, ParkingSpot> vehicleParkingSpotStore;
@@ -30,6 +34,7 @@ public class ParkingLot {
 
         this.parkingFloors = parkingFloors;
         this.fareCalculator = fareCalculator;
+        this.paymentService = new PaymentService();
         this.freeSpots = new EnumMap<>(VehicleSize.class);
         vehicleParkingSpotStore = new ConcurrentHashMap<>();
 
@@ -67,7 +72,7 @@ public class ParkingLot {
         return new Ticket(vehicle, parkingSpot);
     }
 
-    public BigDecimal unpark(Ticket ticket) {
+    public Payment unpark(Ticket ticket, PaymentMethod paymentMethod) {
         String plate = ticket.getVehicle().getLicensePlate();
 
         ParkingSpot parkingSpot = vehicleParkingSpotStore.remove(plate);
@@ -81,7 +86,7 @@ public class ParkingLot {
         parkingSpot.vacate();
         releaseSpot(parkingSpot);
 
-        return fare;
+        return paymentService.pay(fare, paymentMethod);
     }
 
     private ParkingSpot getParkingSpot (Vehicle vehicle) {

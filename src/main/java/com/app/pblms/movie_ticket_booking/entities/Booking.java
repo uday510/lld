@@ -1,6 +1,9 @@
 package com.app.pblms.movie_ticket_booking.entities;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 import com.app.pblms.movie_ticket_booking.enums.BookingStatus;
 
@@ -18,7 +21,7 @@ public class Booking {
         this.id = UUID.randomUUID().toString();
         this.user = user;
         this.show = show;
-        this.seats = List.copyOf(seats);         `   // immutable defensive copy
+        this.seats = List.copyOf(seats);            // immutable defensive copy
         this.totalAmount = seats.stream()
                 .map(ShowSeat::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

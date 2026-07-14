@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.app.patterns.creational.builder.User;
 import com.app.pblms.movie_ticket_booking.entities.Booking;
 import com.app.pblms.movie_ticket_booking.entities.Seat;
 import com.app.pblms.movie_ticket_booking.entities.Show;
+import com.app.pblms.movie_ticket_booking.entities.User;
 import com.app.pblms.movie_ticket_booking.enums.SeatCategory;
 import com.app.pblms.movie_ticket_booking.services.BookingService;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
        
         List<Seat> seats = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
@@ -34,7 +34,7 @@ public class Main {
         // --- sanity 2: booking an already-booked seat fails ---
         System.out.println("\n=== Sanity: book A1 again (taken) ===");
         try {
-            bookingService.bookWithCas(show, new User("u2", "Bob"), List.of("A1"));
+            bookingService.bookWithCAS(show, new User("u2", "Bob"), List.of("A1"));
             System.out.println("ERROR: should have failed");
         } catch (Exception e) {
             System.out.println("Expected failure: " + e.getMessage());
@@ -48,9 +48,9 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             final int idx = i;
             threads[i] = new Thread(() -> {
-                user u = new User("race-" + idx, "Racer" + idx);
+                User u = new User("race-" + idx, "Racer" + idx);
                 try {
-                    bookingService.bookWithCas(show, u, List.of("A3"));
+                    bookingService.bookWithCAS(show, u, List.of("A3"));
                     successes.incrementAndGet();
                 } catch (Exception e) {
                     failures.incrementAndGet();
@@ -67,7 +67,7 @@ public class Main {
         // --- all-or-nothing test: request [A4, A1] where A1 is taken -> book NONE ---
         System.out.println("\n=== All-or-nothing: [A4, A1], A1 taken ===");
         try {
-            bookingService.bookWithCas(show, alice, List.of("A4", "A1"));
+            bookingService.bookWithCAS(show, alice, List.of("A4", "A1"));
             System.out.println("ERROR: should have failed");
         } catch (Exception e) {
             System.out.println("Expected failure: " + e.getMessage());
