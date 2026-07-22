@@ -4,20 +4,21 @@ import com.app.pblms.parking_lot.spot.ParkingSpot;
 import com.app.pblms.parking_lot.vehicle.Vehicle;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneId;
 
 public class Ticket {
 
     private final Vehicle vehicle;
     private final ParkingSpot parkingSpot;
-    private final LocalDateTime entryTime;
+    private final Instant entryTime;
 
-    private LocalDateTime exitTime;
+    private Instant exitTime;
 
     public Ticket(Vehicle vehicle, ParkingSpot parkingSpot) {
         this.vehicle = vehicle;
         this.parkingSpot = parkingSpot;
-        this.entryTime = LocalDateTime.now();
+        this.entryTime = Instant.now();
     }
 
     public Vehicle getVehicle() {
@@ -28,22 +29,22 @@ public class Ticket {
         return parkingSpot;
     }
 
-    public LocalDateTime getEntryTime() {
+    public Instant getEntryTime() {
         return entryTime;
     }
 
-    public LocalDateTime getExitTime() {
+    public Instant getExitTime() {
         return exitTime;
     }
 
     public void closeTicket() {
-        this.exitTime = LocalDateTime.now();
+        this.exitTime = Instant.now();
     }
 
     public long getParkingDurationMinutes() {
-
-        LocalDateTime endTime = (exitTime == null)
-                ? LocalDateTime.now()
+        ZoneId zoneId = ZoneId.systemDefault();
+        Instant endTime = (exitTime == null)
+                ? Instant.now()
                 : exitTime;
 
         long minutes = Duration.between(entryTime, endTime).toMinutes();
