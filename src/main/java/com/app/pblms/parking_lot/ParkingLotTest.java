@@ -618,3 +618,373 @@ void main() {
 }
 
  */
+
+
+/**
+ * 
+ * 
+ * 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+enum VehicleSize {
+    SMALL, MEDIUM, LARGE
+}
+enum PaymentMethod {
+    CASH, CREDIT_CARD
+}
+enum PaymentStatus {
+    SUCCESS, FAILED
+}
+interface Vehicle { VehicleSize getSize(); String getLicensePlate(); }
+
+abstract class AbstractVehicle implements Vehicle {
+    private final String licensePlate;
+
+    AbstractVehicle(String licensePlate) { this.licensePlate = licensePlate; }
+
+    public String getLicensePlate() { return licensePlate; }
+}
+
+class Motorcycle extends AbstractVehicle {
+    private final VehicleSize vehicleSize;
+    Motorcycle (String licensePlate) { super(licensePlate); vehicleSize = VehicleSize.SMALL; }
+
+    public VehicleSize getSize() { return vehicleSize; }
+}
+
+class Car extends AbstractVehicle {
+    private final VehicleSize vehicleSize;
+    Car (String licensePlate) { super(licensePlate); vehicleSize = VehicleSize.MEDIUM; }
+
+    public VehicleSize getSize() { return vehicleSize; }
+}
+
+class Truck extends AbstractVehicle {
+    private final VehicleSize vehicleSize;
+    Truck (String licensePlate) { super(licensePlate); vehicleSize = VehicleSize.LARGE; }
+
+    public VehicleSize getSize() { return vehicleSize; }
+}
+
+class ParkingSpot {
+    private final String spotNumber;
+    private final VehicleSize size;
+
+    private Vehicle vehicle;
+
+    public ParkingSpot (String spotNumber, VehicleSize vehicleSize) { this.spotNumber = spotNumber; this.size = vehicleSize; }
+
+    public VehicleSize getSize() { return size; }
+
+    public boolean isFree() { return vehicle == null; }
+
+    public void occupy(Vehicle vehicle) {
+        if (vehicle == null) throw new RuntimeException("Vehicle not provided.");
+        if (!isFree()) { throw new RuntimeException("Parking Spot not available."); }
+        this.vehicle = vehicle;
+    }
+
+    public void vacate() {
+        if (isFree()) { throw new RuntimeException("Parking Spot is empty or already vacated."); }
+        this.vehicle = null;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+}
+
+class ParkingFloor {
+    private final String floorId;
+    private final List<ParkingSpot> parkingSpots;
+
+    ParkingFloor (String floorId, List<ParkingSpot> parkingSpots) {
+        this.floorId = floorId;
+        this.parkingSpots = new CopyOnWriteArrayList<>();
+        parkingSpots.forEach(this::addParkingSpot);
+    }
+
+    void addParkingSpot(ParkingSpot parkingSpot) {
+        if (parkingSpot == null) { throw new RuntimeException("ParkingSpot cannot be null"); }
+        this.parkingSpots.add(parkingSpot);
+    }
+
+    List<ParkingSpot> getParkingSpots() { return parkingSpots; }
+}
+
+class Ticket {
+    private String id;
+    private final Instant entryTime;
+    private final Vehicle vehicle;
+    private final ParkingSpot parkingSpot;
+    private Instant exitTime;
+
+    Ticket (String id, Vehicle vehicle, ParkingSpot parkingSpot) {
+        this.id = id;
+        this.parkingSpot = parkingSpot;
+        this.vehicle = vehicle;
+        this.entryTime = Instant.now();
+    }
+
+    Vehicle getVehicle() {return vehicle; }
+    ParkingSpot getParkingSpot() { return parkingSpot; }
+    void close() { this.exitTime = Instant.now(); }
+    Instant getEntryTime() { return this.entryTime; }
+
+    public long getParkingDuration() {
+        Instant endTime = (exitTime == null) ? Instant.now() : exitTime;
+
+        long mins = Duration.between(entryTime, endTime).toMinutes();
+        return Math.max(mins, 1);
+    }
+}
+
+class Payment {
+    private final String id;
+    private final Instant createdAt;
+    private final PaymentMethod paymentMethod;
+    private final PaymentStatus paymentStatus;
+    private final BigDecimal amount;
+
+    public Payment (String id, PaymentMethod paymentMethod, PaymentStatus paymentStatus, BigDecimal amount) {
+        this.id = id;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.amount = amount;
+        this.createdAt = Instant.now();
+    }
+}
+
+interface PaymentProcessor { Payment pay(BigDecimal amount); }
+
+class CashPaymentProcessor implements PaymentProcessor {
+    public Payment pay(BigDecimal amount) {
+        return new Payment(UUID.randomUUID().toString(), PaymentMethod.CASH, PaymentStatus.SUCCESS, amount);
+    }
+}
+class CreditCardPaymentProcessor implements PaymentProcessor {
+    public Payment pay(BigDecimal amount) {
+        return new Payment(UUID.randomUUID().toString(), PaymentMethod.CREDIT_CARD, PaymentStatus.SUCCESS, amount);
+    }
+}
+
+interface FareStrategy { BigDecimal calculateFare(Ticket ticket, BigDecimal runningFare); }
+
+class BaseFareStrategy implements FareStrategy {
+    private static final Map<VehicleSize, BigDecimal> RATE_MAP = Map.of(
+            VehicleSize.SMALL, new BigDecimal("1.0"),
+            VehicleSize.MEDIUM, new BigDecimal("2.0"),
+            VehicleSize.LARGE, new BigDecimal("3.0"));
+
+    public BigDecimal calculateFare(Ticket ticket, BigDecimal runningFare) {
+        BigDecimal rate = RATE_MAP.getOrDefault(ticket.getVehicle().getSize(), new BigDecimal("1.0"));
+        long duration = ticket.getParkingDuration();
+
+        return runningFare.add(rate.multiply(BigDecimal.valueOf(duration)));
+    }
+}
+
+class PeakHourFareStrategy implements FareStrategy {
+    private static final BigDecimal PEAK_MULTIPLIER = new BigDecimal("1.5");
+
+    public BigDecimal calculateFare(Ticket ticket, BigDecimal runningFare) {
+        Instant entryTime = ticket.getEntryTime();
+        if (!isPeakHour(entryTime)) return runningFare;
+        return runningFare.multiply(PEAK_MULTIPLIER);
+    }
+
+    private boolean isPeakHour(Instant time) {
+        ZoneId zone = ZoneId.systemDefault();
+        long hour = time.atZone(zone).getHour();
+
+        boolean isMorning = (hour >= 8 && hour <= 10);
+        boolean isEvening = (hour >= 17 && hour <= 19);
+
+        return isMorning || isEvening;
+    }
+}
+
+class FareCalculator {
+    private final List<FareStrategy> fareStrategies;
+
+    FareCalculator (List<FareStrategy> fareStrategies) {
+        this.fareStrategies = new CopyOnWriteArrayList<>();
+        fareStrategies.forEach(this::addFareStrategy);
+    }
+
+    public BigDecimal calculateFare(Ticket ticket) {
+        BigDecimal fare = BigDecimal.ZERO;
+        for (FareStrategy strategy : fareStrategies) {
+            fare = strategy.calculateFare(ticket, fare);
+        }
+        return fare;
+    }
+
+    public void addFareStrategy(FareStrategy fareStrategy) {
+        this.fareStrategies.add(fareStrategy);
+    }
+}
+
+class PaymentService {
+    private final Map<PaymentMethod, PaymentProcessor> paymentProcessors;
+    PaymentService () {
+        paymentProcessors = new EnumMap<>(PaymentMethod.class);
+        paymentProcessors.put(PaymentMethod.CASH, new CashPaymentProcessor());
+        paymentProcessors.put(PaymentMethod.CREDIT_CARD, new CreditCardPaymentProcessor());
+    }
+    Payment pay(BigDecimal amount, PaymentMethod paymentMethod) {
+        PaymentProcessor processor = paymentProcessors.get(paymentMethod);
+        if (processor == null) throw new RuntimeException("Payment Method not allowed");
+        return processor.pay(amount);
+    }
+}
+class ParkingLot {
+    private final List<ParkingFloor> parkingFloors;
+    private final FareCalculator fareCalculator;
+    private final PaymentService paymentService;
+    private final Map<VehicleSize, Queue<ParkingSpot>> freeSpots;
+    private final Map<String, ParkingSpot> vehicleParkingSpotMap;
+    private final VehicleSize[] vehicleSizes;
+
+
+    ParkingLot (List<ParkingFloor> parkingFloors, FareCalculator fareCalculator) {
+        this.parkingFloors = new CopyOnWriteArrayList<>(parkingFloors);
+        this.fareCalculator = fareCalculator;
+        this.paymentService = new PaymentService();
+        this.freeSpots = new EnumMap<>(VehicleSize.class);
+        vehicleParkingSpotMap = new ConcurrentHashMap<>();
+        vehicleSizes = VehicleSize.values();
+
+        for (VehicleSize vehicleSize : vehicleSizes) {
+            freeSpots.put(vehicleSize, new ConcurrentLinkedQueue<>());
+        }
+        
+        initialize();
+    }
+
+    public Ticket park(Vehicle vehicle) {
+        ParkingSpot parkingSpot = getParkingSpot(vehicle);
+        if (parkingSpot == null) throw new RuntimeException("ParkingSpot not available.");
+        String licensePlate = vehicle.getLicensePlate();
+        ParkingSpot existing = vehicleParkingSpotMap.putIfAbsent(licensePlate, parkingSpot);
+        if (existing != null) throw new RuntimeException("Vehicle already parked");
+
+        try {
+            parkingSpot.occupy(vehicle);
+        } catch (Exception e) {
+
+            vehicleParkingSpotMap.remove(licensePlate);
+            releaseSpot(parkingSpot);
+            throw e;
+        }
+
+        return new Ticket(UUID.randomUUID().toString(), vehicle, parkingSpot);
+    }
+
+    public Payment unpark(Ticket ticket, PaymentMethod paymentMethod) throws IllegalAccessException {
+        String plate = ticket.getVehicle().getLicensePlate();
+
+        ParkingSpot parkingSpot = vehicleParkingSpotMap.remove(plate);
+        if (parkingSpot == null) throw new RuntimeException("Vehicle already exit");
+
+        ticket.close();
+        BigDecimal fare = fareCalculator.calculateFare(ticket);
+
+        Payment payment;
+        try {
+            payment = paymentService.pay(fare, paymentMethod);
+        } catch (Exception e) {
+            vehicleParkingSpotMap.put(plate, parkingSpot);
+            throw new IllegalStateException("Payment failed, vehicle cannot exit");
+        }
+
+        parkingSpot.vacate();
+        releaseSpot(parkingSpot);
+        return payment;
+    }
+
+    private void releaseSpot(ParkingSpot parkingSpot) {
+        freeSpots.get(parkingSpot.getSize()).offer(parkingSpot);
+    }
+
+    private ParkingSpot getParkingSpot(Vehicle vehicle) {
+        VehicleSize reqSize = vehicle.getSize();
+
+        for (VehicleSize vehicleSize : vehicleSizes) {
+            if (vehicleSize.compareTo(reqSize) < 0) continue;
+
+            Queue<ParkingSpot> queue = freeSpots.get(vehicleSize);
+            while (!queue.isEmpty()) {
+                 ParkingSpot parkingSpot = queue.poll();
+                if (parkingSpot != null && parkingSpot.isFree()) {
+                    return parkingSpot;
+                 }
+            }
+        }
+
+        return null;
+    }
+
+    private void initialize() {
+        for (ParkingFloor parkingFloor : parkingFloors) {
+            for (ParkingSpot parkingSpot : parkingFloor.getParkingSpots()) {
+                freeSpots.get(parkingSpot.getSize()).offer(parkingSpot);
+            }
+        }
+    }
+}
+
+class EntryGate {
+    private final String id;
+    private final ParkingLot parkingLot;
+    EntryGate(String id, ParkingLot parkingLot) {
+        this.id = id; this.parkingLot = parkingLot;
+    }
+
+    Ticket enter(Vehicle vehicle) {return parkingLot.park(vehicle);}
+}
+
+class ExitGate {
+    private final String id;
+    private final ParkingLot parkingLot;
+    ExitGate (String id, ParkingLot parkingLot) {
+        this.id = id; this.parkingLot = parkingLot;
+    }
+
+    Payment exit(Ticket ticket, PaymentMethod paymentMethod) throws Exception {
+        return parkingLot.unpark(ticket, paymentMethod);
+    }
+}
+
+class Main {
+    public static void main(String[] args) throws Exception {
+
+    List<ParkingSpot> parkingSpots = new ArrayList<>(
+            List.of(new ParkingSpot("p1", VehicleSize.MEDIUM),
+                    new ParkingSpot("p2", VehicleSize.MEDIUM),
+                    new ParkingSpot("p3", VehicleSize.LARGE)));
+                    
+    List<ParkingFloor> floors = new ArrayList<>(List.of(new ParkingFloor("floor-1", parkingSpots)));
+    FareCalculator fareCalculator = new FareCalculator(new ArrayList<>(List.of(new BaseFareStrategy(), new PeakHourFareStrategy())));
+
+    ParkingLot parkingLot = new ParkingLot(floors, fareCalculator);
+    EntryGate entryGate1 = new EntryGate("entry-gate-1", parkingLot);
+    ExitGate exitGate1 = new ExitGate("exit-gate-1", parkingLot);
+
+    Vehicle truck = new Truck("zz-xx-yy");
+    Ticket ticket = entryGate1.enter(truck);
+    Payment payment = exitGate1.exit(ticket, PaymentMethod.CREDIT_CARD);
+
+}
+
+}
+
+
+ */
