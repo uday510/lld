@@ -1,7 +1,7 @@
 package com.app.pblms.parking_lot.payment;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 
 public class Payment {
@@ -9,7 +9,7 @@ public class Payment {
     private final String paymentId;
     private final PaymentMethod paymentMethod;
     private final BigDecimal amount;
-    private final LocalDateTime createdAt;
+    private final Instant createdAt;
     private final PaymentStatus status;
 
     public Payment(String paymentId,
@@ -21,7 +21,7 @@ public class Payment {
         this.paymentMethod = paymentMethod;
         this.amount = amount;
         this.status = status;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = Instant.now();
 
     }
 
@@ -37,7 +37,7 @@ public class Payment {
         return amount;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
